@@ -1,31 +1,83 @@
-// Task 3: Lookup reviews for selected businesses and filter for wait-related keywords
-
 import { getBusinessCollection } from '../config.js';
 
-export const name = 'lookupReviews';
-export const description = 'Task 3: TODO';
+export const name = 'assessRisk';
+export const description = 'Task 3: Find which users review highly rated businesses';
 
 export async function run() {
     const coll = await getBusinessCollection();
-    //const coll = await getReviewCollection();
-
-    // results from task 2
-    const selectedBusinessIds = [
-        'business_id_1',
-        'business_id_2',
-        'business_id_3',
-        // Add more business_ids as needed
-    ];
-
 
     const pipeline = [
-        // TODO: Filter or use hardcoded business_ids from Task 2
-        // TODO: $lookup to join with 'reviews'
-        // TODO: Filter reviews where text matches "wait", "slow service", etc.
-        // TODO: Project business name, review text, stars
-    ];
+        [
+            {
+                $match: {
+                    is_open: 1,
+                    stars: { $gte: 4.5 },
+                    review_count: { $gte: 10 }
+                }
+            },
+            {
+                $lookup: {
+                    from: "reviews",
+                    localField: "business_id",
+                    foreignField: "business_id",
+                    as: "reviews"
+                }
+            },
+            { $unwind: "$reviews" },
+            {
+                $match: {
+                    "reviews.text": {
+                        $regex: /(wait(ed|ing)?|slow service)/i
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: "$business_id",
+                    business_name: { $first: "$name" },
+                    complaint_count: { $sum: 1 },
+                    avg_review_stars: { $avg: "$reviews.stars" },
+                    total_review_count: { $first: "$review_count" }
+                }
+            },
+            {
+                $addFields: {
+                    complaint_ratio: {
+                        $divide: ["$complaint_count", "$total_review_count"]
+                    },
+                    riskLevel: {
+                        $cond: [
+                            { $gt: [{ $divide: ["$complaint_count", "$total_review_count"] }, 0.3] },
+                            "high",
+                            {
+                                $cond: [
+                                    { $gt: [{ $divide: ["$complaint_count", "$total_review_count"] }, 0.1] },
+                                    "medium",
+                                    "low"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    business_name: 1,
+                    complaint_count: 1,
+                    avg_review_stars: 1,
+                    complaint_ratio: 1,
+                    riskLevel: 1
+                }
+            },
+            {
+                $out: "business_complaint_risk"
+            }
+        ]
+
+        ];
 
     const results = await coll.aggregate(pipeline).toArray();
-    console.log('\nTask 3 Results:');
+    console.log('\nTask 2 Results:');
     console.table(results);
 }

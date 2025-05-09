@@ -10,15 +10,36 @@ This sample project connects to a MongoDB Atlas cluster and runs a simple aggreg
 
 ## Setup
 
-1. Clone this repo and `cd yelp-nodejs`
-2. `npm install`
-3. Create a `.env` file
+1. Clone the `aggregation-tasks` repo
+   ```bash
+   git clone https://github.com/cbullinger/aggregation-tasks.git && cd nodejs
+   ```
+2. Install project dependencies 
+   ```bash
+   npm install
+   ```
+3. Define the MongoDB connection string in a `.env` file
+   ```bash
+   touch .env
+   ```
+   Add the following line to the `.env` file, replacing the placeholders with your actual MongoDB connection details:
+   ```bash
+   # .env
+   # Replace <username>, <password>, <cluster>, and <database> with your actual values
+   MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
+   ```
+   Example of a connection string in
+a `.env` file
     ```
    MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
    ```
 4. Run `npm start`
 
 You should see the top 10 cities by restaurant count printed, then a clean shutdown.
+
+## Project Structure
+
+
 
 ### Sample Document
 

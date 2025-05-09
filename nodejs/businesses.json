@@ -1,0 +1,60 @@
+{"business_id": "B001", "name": "Green Bistro", "city": "Coast City", "stars": 4.5, "review_count": 30, "is_open": 1}
+{"business_id": "B002", "name": "Urban House", "city": "Smallville", "stars": 4.6, "review_count": 25, "is_open": 1}
+{"business_id": "B003", "name": "Green Lounge", "city": "Gotham", "stars": 5.0, "review_count": 27, "is_open": 1}
+{"business_id": "B004", "name": "Maple House", "city": "Fawcett City", "stars": 4.8, "review_count": 27, "is_open": 1}
+{"business_id": "B005", "name": "Grand Lounge", "city": "Central City", "stars": 4.7, "review_count": 15, "is_open": 1}
+{"business_id": "B006", "name": "Golden Grill", "city": "Smallville", "stars": 5.0, "review_count": 17, "is_open": 1}
+{"business_id": "B007", "name": "Red Bar", "city": "Central City", "stars": 4.5, "review_count": 26, "is_open": 1}
+{"business_id": "B008", "name": "Maple Bistro", "city": "National City", "stars": 4.8, "review_count": 32, "is_open": 1}
+{"business_id": "B009", "name": "Classic Tavern", "city": "Coast City", "stars": 4.5, "review_count": 35, "is_open": 1}
+{"business_id": "B010", "name": "Classic Garden", "city": "Central City", "stars": 4.8, "review_count": 39, "is_open": 1}
+{"business_id": "B011", "name": "Sunny Bistro", "city": "Star City", "stars": 5.0, "review_count": 30, "is_open": 1}
+{"business_id": "B012", "name": "Sunny Grill", "city": "Midway City", "stars": 4.6, "review_count": 32, "is_open": 1}
+{"business_id": "B013", "name": "Grand Garden", "city": "Midway City", "stars": 4.8, "review_count": 39, "is_open": 1}
+{"business_id": "B014", "name": "Silver Diner", "city": "Star City", "stars": 4.5, "review_count": 15, "is_open": 1}
+{"business_id": "B015", "name": "Golden Lounge", "city": "Metropolis", "stars": 4.8, "review_count": 21, "is_open": 1}
+{"business_id": "B016", "name": "Sunny Bakery", "city": "Ivy Town", "stars": 3.0, "review_count": 11, "is_open": 1}
+{"business_id": "B017", "name": "Grand Bakery", "city": "Gotham", "stars": 4.3, "review_count": 13, "is_open": 0}
+{"business_id": "B018", "name": "Grand Bistro", "city": "Gotham", "stars": 4.0, "review_count": 2, "is_open": 1}
+{"business_id": "B019", "name": "Urban Bakery", "city": "National City", "stars": 1.0, "review_count": 13, "is_open": 0}
+{"business_id": "B020", "name": "Silver Tavern", "city": "Metropolis", "stars": 3.5, "review_count": 2, "is_open": 1}
+{"business_id": "B021", "name": "Red Cafe", "city": "Metropolis", "stars": 3.0, "review_count": 8, "is_open": 1}
+{"business_id": "B022", "name": "Rustic Grill", "city": "Smallville", "stars": 4.0, "review_count": 10, "is_open": 1}
+{"business_id": "B023", "name": "Grand Bar", "city": "Ivy Town", "stars": 1.0, "review_count": 20, "is_open": 0}
+{"business_id": "B024", "name": "Sunny House", "city": "Central City", "stars": 1.0, "review_count": 4, "is_open": 1}
+{"business_id": "B025", "name": "Maple Cafe", "city": "National City", "stars": 4.3, "review_count": 2, "is_open": 0}
+{"business_id": "B026", "name": "Green Tavern", "city": "Star City", "stars": 3.5, "review_count": 17, "is_open": 1}
+{"business_id": "B027", "name": "Red Bistro", "city": "Smallville", "stars": 4.3, "review_count": 9, "is_open": 1}
+{"business_id": "B028", "name": "Cozy House", "city": "National City", "stars": 2.5, "review_count": 17, "is_open": 1}
+{"business_id": "B029", "name": "Rustic Kitchen", "city": "Fawcett City", "stars": 1.0, "review_count": 20, "is_open": 0}
+{"business_id": "B030", "name": "Golden Bakery", "city": "Star City", "stars": 3.5, "review_count": 13, "is_open": 0}
+{"business_id": "B031", "name": "Red Garden", "city": "Midway City", "stars": 3.5, "review_count": 0, "is_open": 1}
+{"business_id": "B032", "name": "Green Garden", "city": "Ivy Town", "stars": 4.3, "review_count": 14, "is_open": 1}
+{"business_id": "B033", "name": "Silver Cafe", "city": "National City", "stars": 1.0, "review_count": 5, "is_open": 1}
+{"business_id": "B034", "name": "Golden House", "city": "Smallville", "stars": 4.0, "review_count": 17, "is_open": 0}
+{"business_id": "B035", "name": "Red Tavern", "city": "Central City", "stars": 4.0, "review_count": 3, "is_open": 1}
+{"business_id": "B036", "name": "Cozy Bakery", "city": "Coast City", "stars": 4.0, "review_count": 10, "is_open": 0}
+{"business_id": "B037", "name": "Rustic Bakery", "city": "Smallville", "stars": 4.0, "review_count": 7, "is_open": 0}
+{"business_id": "B038", "name": "Modern Bakery", "city": "National City", "stars": 3.0, "review_count": 12, "is_open": 0}
+{"business_id": "B039", "name": "Urban Corner", "city": "Metropolis", "stars": 1.0, "review_count": 6, "is_open": 0}
+{"business_id": "B040", "name": "Modern Cafe", "city": "Gotham", "stars": 2.5, "review_count": 8, "is_open": 0}
+{"business_id": "B041", "name": "Grand Tavern", "city": "Smallville", "stars": 4.0, "review_count": 10, "is_open": 0}
+{"business_id": "B042", "name": "Cozy Kitchen", "city": "National City", "stars": 4.0, "review_count": 17, "is_open": 0}
+{"business_id": "B043", "name": "Grand Cafe", "city": "Ivy Town", "stars": 2.5, "review_count": 15, "is_open": 1}
+{"business_id": "B044", "name": "Classic Bistro", "city": "Smallville", "stars": 1.0, "review_count": 8, "is_open": 1}
+{"business_id": "B045", "name": "Modern Grill", "city": "Fawcett City", "stars": 3.5, "review_count": 7, "is_open": 0}
+{"business_id": "B046", "name": "Blue Diner", "city": "Smallville", "stars": 4.3, "review_count": 0, "is_open": 1}
+{"business_id": "B047", "name": "Happy Cafe", "city": "Metropolis", "stars": 4.3, "review_count": 18, "is_open": 0}
+{"business_id": "B048", "name": "Red Grill", "city": "Ivy Town", "stars": 3.0, "review_count": 14, "is_open": 1}
+{"business_id": "B049", "name": "Maple Tavern", "city": "Midway City", "stars": 3.0, "review_count": 11, "is_open": 0}
+{"business_id": "B050", "name": "Happy Bakery", "city": "Ivy Town", "stars": 3.0, "review_count": 6, "is_open": 0}
+{"business_id": "B051", "name": "Modern Diner", "city": "National City", "stars": 1.0, "review_count": 13, "is_open": 1}
+{"business_id": "B052", "name": "Maple Garden", "city": "Smallville", "stars": 3.0, "review_count": 5, "is_open": 1}
+{"business_id": "B053", "name": "Sunny Garden", "city": "Coast City", "stars": 1.0, "review_count": 9, "is_open": 0}
+{"business_id": "B054", "name": "Urban Tavern", "city": "Metropolis", "stars": 4.0, "review_count": 19, "is_open": 1}
+{"business_id": "B055", "name": "Red Diner", "city": "Coast City", "stars": 3.5, "review_count": 1, "is_open": 1}
+{"business_id": "B056", "name": "Rustic Cafe", "city": "Central City", "stars": 1.0, "review_count": 14, "is_open": 1}
+{"business_id": "B057", "name": "Sunny Garden", "city": "Midway City", "stars": 4.3, "review_count": 14, "is_open": 1}
+{"business_id": "B058", "name": "Cozy Lounge", "city": "Central City", "stars": 4.0, "review_count": 18, "is_open": 1}
+{"business_id": "B059", "name": "Sunny Diner", "city": "Smallville", "stars": 4.3, "review_count": 14, "is_open": 1}
+{"business_id": "B060", "name": "Sunny House", "city": "Metropolis", "stars": 1.0, "review_count": 5, "is_open": 0}

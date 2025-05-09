@@ -1,6 +1,6 @@
-import { closeConnection } from './config.js';
-import fs from 'fs';
-import path from 'path';
+import {closeConnection} from "./config.js";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 async function main() {
     const taskName = process.argv[2];
@@ -9,7 +9,6 @@ async function main() {
         process.exit(1);
     }
 
-    // Dynamically load all tasks
     const tasksDir = path.resolve('src', 'tasks');
     const taskFiles = fs.readdirSync(tasksDir).filter(f => f.endsWith('.js'));
     const tasks = {};
@@ -26,10 +25,17 @@ async function main() {
     }
 
     console.log(`Running task: ${taskName} — ${task.description}`);
+    const timeout = 10000; // ms
+
     try {
-        await task.run();
+        await Promise.race([
+            task.run(),
+            new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Task timed out')), timeout)
+            )
+        ]);
     } catch (err) {
-        console.error('Task failed:', err);
+        console.error('Task error:', err);
         process.exitCode = 1;
     } finally {
         await closeConnection();

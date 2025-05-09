@@ -32,3 +32,4 @@ export async function getReviewCollection() {
 export async function closeConnection() {
     await client.close();
 }
+
