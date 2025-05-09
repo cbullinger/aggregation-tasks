@@ -1,0 +1,15 @@
+{
+  "name": "yelp-nodejs",
+  "version": "1.0.0",
+  "description": "Contains aggregation tasks for user study",
+  "type": "module",
+  "scripts": {
+    "start": "node -src/index.js",
+    "verify": "node src/verify.js"
+  },
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "mongodb": "^6.16.0"
+  }
+}

@@ -1,0 +1,177 @@
+[
+  {
+    "business_id": "GXFMD0Z4jEVZBCsbPf4CTQ",
+    "name": "Hattie B’s Hot Chicken - Nashville",
+    "city": "Nashville",
+    "stars": 4.5,
+    "review_count": 6093
+  },
+  {
+    "business_id": "ytynqOUb3hjKeJfRj5Tshw",
+    "name": "Reading Terminal Market",
+    "city": "Philadelphia",
+    "stars": 4.5,
+    "review_count": 5721
+  },
+  {
+    "business_id": "oBNrLz4EDhiscSlbOl8uAw",
+    "name": "Ruby Slipper - New Orleans",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 5193
+  },
+  {
+    "business_id": "_C7QiQQc47AOEv4PE3Kong",
+    "name": "Commander\"s Palace",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 4876
+  },
+  {
+    "business_id": "I_3LMZ_1m2mzR0oLIOePIg",
+    "name": "Pappy\"s Smokehouse",
+    "city": "Saint Louis",
+    "stars": 4.5,
+    "review_count": 3999
+  },
+  {
+    "business_id": "gTC8IQ_i8zXytWSly3Ttvg",
+    "name": "Cochon Butcher",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 3837
+  },
+  {
+    "business_id": "yPSejq3_erxo9zdVYTBnZA",
+    "name": "Los Agaves",
+    "city": "Santa Barbara",
+    "stars": 4.5,
+    "review_count": 3834
+  },
+  {
+    "business_id": "VVH6k9-ycttH3TV_lk5WfQ",
+    "name": "Willie Mae\"s Scotch House",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 3582
+  },
+  {
+    "business_id": "ctHjyadbDQAtUFfkcAFEHw",
+    "name": "Zahav",
+    "city": "Philadelphia",
+    "stars": 4.5,
+    "review_count": 3065
+  },
+  {
+    "business_id": "dsfRniRgfbDjC8os848B6A",
+    "name": "Bern\"s Steak House",
+    "city": "Tampa",
+    "stars": 4.5,
+    "review_count": 2924
+  },
+  {
+    "business_id": "6ajnOk0GcY9xbb5Ocaw8Gw",
+    "name": "Barbuzzo",
+    "city": "Philadelphia",
+    "stars": 4.5,
+    "review_count": 2893
+  },
+  {
+    "business_id": "C9K3579SJgLPp0oAOM29wg",
+    "name": "Peg Leg Porker",
+    "city": "Nashville",
+    "stars": 4.5,
+    "review_count": 2878
+  },
+  {
+    "business_id": "ww3YJXu5c18aGZXWmm00qg",
+    "name": "Café Amelie",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2756
+  },
+  {
+    "business_id": "xlMQBBt9wrtahdqiRDcVSg",
+    "name": "The Stillery",
+    "city": "Nashville",
+    "stars": 4.5,
+    "review_count": 2588
+  },
+  {
+    "business_id": "J0joPXxmN-_9Lzafspqdbw",
+    "name": "Peg\"s Glorified Ham N Eggs",
+    "city": "Reno",
+    "stars": 4.5,
+    "review_count": 2506
+  },
+  {
+    "business_id": "OWOOc0YjU_kioLeEgo5VCA",
+    "name": "Loveless Cafe",
+    "city": "Nashville",
+    "stars": 4.5,
+    "review_count": 2452
+  },
+  {
+    "business_id": "9xdXS7jtWjCVzL4_oPGv9A",
+    "name": "GW Fins",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2443
+  },
+  {
+    "business_id": "mhrW9O0O5hXGXGnEYBVoag",
+    "name": "Jacques-Imo\"s Cafe",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2406
+  },
+  {
+    "business_id": "UFCN0bYdHroPKu6KV5CJqg",
+    "name": "The Eagle",
+    "city": "Indianapolis",
+    "stars": 4.5,
+    "review_count": 2233
+  },
+  {
+    "business_id": "TcNZXteosegb1RO4O5hREw",
+    "name": "Parkway Bakery & Tavern",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2160
+  },
+  {
+    "business_id": "UCMSWPqzXjd7QHq7v8PJjQ",
+    "name": "Prep & Pastry",
+    "city": "Tucson",
+    "stars": 4.5,
+    "review_count": 2126
+  },
+  {
+    "business_id": "vN6v8m4DO45Z4pp8yxxF_w",
+    "name": "Surrey\"s Café & Juice Bar",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2084
+  },
+  {
+    "business_id": "iRIHK8-EwpeffwvoO4nzIA",
+    "name": "Broadway Oyster Bar",
+    "city": "St Louis",
+    "stars": 4.5,
+    "review_count": 2076
+  },
+  {
+    "business_id": "8uF-bhJFgT4Tn6DTb27viA",
+    "name": "District Donuts Sliders Brew",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2062
+  },
+  {
+    "business_id": "75FY8ZQx5nOWP0VFmNvWfw",
+    "name": "Atchafalaya Restaurant",
+    "city": "New Orleans",
+    "stars": 4.5,
+    "review_count": 2037
+  }
+]
