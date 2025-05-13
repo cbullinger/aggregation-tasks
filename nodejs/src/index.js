@@ -5,15 +5,16 @@ import * as fs from "node:fs";
 async function main() {
     const taskName = process.argv[2];
     if (!taskName) {
-        console.error('Usage: npm start <taskName>');
+        console.error('Usage: npm run task <taskName>');
         process.exit(1);
     }
 
-    const tasksDir = path.resolve('src', 'tasks');
-    const taskFiles = fs.readdirSync(tasksDir).filter(f => f.endsWith('.js'));
+    const tasksDir = 'tasks';
+    const tasksPath = path.resolve('src', 'tasks');
+    const taskFiles = fs.readdirSync(tasksPath).filter(f => f.endsWith('.js'));
     const tasks = {};
     for (const file of taskFiles) {
-        const mod = await import(`./tasks/${file}`);
+        const mod = await import(`./${tasksDir}/${file}`);
         tasks[mod.name] = mod;
     }
 
@@ -24,7 +25,7 @@ async function main() {
         process.exit(1);
     }
 
-    console.log(`Running task: ${taskName} — ${task.description}`);
+    console.log(`Running Task ${taskName} — ${task.description}`);
     const timeout = 10000; // ms
 
     try {

@@ -4,7 +4,8 @@
   "description": "Contains aggregation tasks for user study",
   "type": "module",
   "scripts": {
-    "start": "node -src/index.js",
+    "task": "node src/index.js",
+    "testConnection": "node src/testConnection.js",
     "verify": "node src/verify.js"
   },
   "private": true,

@@ -1,49 +1,72 @@
-# Yelp Aggregation with Node.js
+# MongoDB Aggregation Pipeline Study: Node.js Driver
 
-This sample project connects to a MongoDB Atlas cluster and runs a simple aggregation on the Yelp sample dataset.
+This study will help us learn how you use MongoDB documentation to build aggregation pipelines. 
+You will work with the Yelp sample dataset (business and review collections) already loaded in MongoDB Atlas.
 
-## Prerequisites
+This Node.js project contains a series of tasks that require an aggregation pipeline to return the desired data.  
+Your job is to write the aggregation pipeline logic in each task file. 
+Connection code and data setup are already handled for you.
 
-- Node.js ≥ 16
-- An Atlas cluster with the [Yelp sample dataset](https://www.mongodb.com/docs/atlas/sample-data/) loaded
-- Your IP address added to Atlas Network Access
-
-## Setup
-
-1. Clone the `aggregation-tasks` repo
-   ```bash
-   git clone https://github.com/cbullinger/aggregation-tasks.git && cd nodejs
-   ```
-2. Install project dependencies 
-   ```bash
-   npm install
-   ```
-3. Define the MongoDB connection string in a `.env` file
-   ```bash
-   touch .env
-   ```
-   Add the following line to the `.env` file, replacing the placeholders with your actual MongoDB connection details:
-   ```bash
-   # .env
-   # Replace <username>, <password>, <cluster>, and <database> with your actual values
-   MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
-   ```
-   Example of a connection string in
-a `.env` file
-    ```
-   MONGODB_URI="mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority"
-   ```
-4. Run `npm start`
-
-You should see the top 10 cities by restaurant count printed, then a clean shutdown.
+> **This is not a test of your skill or knowledge.** We want to see how you use our documentation.
+> If you feel stuck or confused, that is our responsibility.
 
 ## Project Structure
 
+```text
+.
+├── tasks/                      # The self-contained tasks to complete  
+│   ├── task1.js
+│   ├── task2.js
+│   └── task3.js
+├── config.js                   # Atlas connection logic
+├── index.js                    # Entry point to run the tasks
+├── testConnection.js         # Tests connection and read access 
+├── package.json                
+└── README.md
+```
 
+## Setup
 
+1. Confirm you have the following, or install if needed (both are required to run the MongoDB Node.js driver):
+   - Node.js v16.20.1 or later
+   - npm (Node Package Manager)
+
+2. Clone this repository, and navigate to the `nodejs` project root.
+   ```bash
+   git clone https://github.com/cbullinger/aggregation-tasks.git && cd nodejs
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Set your `MONGODB_URI` variable to the connection string provided by the moderator.
+    You can choose export it as a global var or create a `.env` at the project root.
+5. Verify your setup:
+
+   ```bash
+   npm start verifyConnection
+   ```
+
+## Logistics
+
+* **Time estimate:** 60 minutes (about 3 tasks).
+* **Session:** Virtual.
+* **Privacy:** All data and feedback are confidential.
+
+## Running a Task
+
+To run any task, use:
+
+```bash
+npm start <taskname>
+```
+
+Replace `<taskname>` with the file name (without `.js`), for example `task1_simpleMatch`.
+
+---
 ### Sample Document
 
-```
+```json
 {
   "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
   "name":        "Garaje",
@@ -82,6 +105,7 @@ You should see the top 10 cities by restaurant count printed, then a clean shutd
   }
 }
 ```
+
 | Field          | Type           | Description                                          |
 | -------------- | -------------- | ---------------------------------------------------- |
 | `business_id`  | string         | 22-character unique business identifier              |
@@ -102,7 +126,7 @@ You should see the top 10 cities by restaurant count printed, then a clean shutd
 
 ### Sample Review Document
 
-```
+```json
 {
   "review_id":   "r1g0v2x3y4z5a6b7c8d9e0f",
   "user_id":     "u1a2b3c4d5e6f7g8h9i0j1k",
@@ -115,6 +139,7 @@ You should see the top 10 cities by restaurant count printed, then a clean shutd
   "cool":        5
 }
 ```
+
 | Field         | Type     | Description                                                    |
 | ------------- | -------- | -------------------------------------------------------------- |
 | `review_id`   | string   | 22-character unique review identifier                          |
@@ -128,11 +153,4 @@ You should see the top 10 cities by restaurant count printed, then a clean shutd
 | `cool`        | integer  | Number of “cool” votes received                                |
 
 
----
-
-### Next steps
-
-- Replace the pipeline in `index.js` to explore other aggregation operators
-- Write additional modules (e.g. Map-Reduce examples, faceted search tasks)
-- Integrate this into the ethnography study’s task runner
 
