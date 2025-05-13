@@ -1,83 +1,31 @@
 import { getBusinessCollection } from '../config.js';
 
-export const name = 'assessRisk';
-export const description = 'Task 3: Find which users review highly rated businesses';
+export const name = '3';
+export const description = 'Group complaints and compute a riskLevel';
 
 export async function run() {
     const coll = await getBusinessCollection();
 
     const pipeline = [
-        [
-            {
-                $match: {
-                    is_open: 1,
-                    stars: { $gte: 4.5 },
-                    review_count: { $gte: 10 }
-                }
-            },
-            {
-                $lookup: {
-                    from: "reviews",
-                    localField: "business_id",
-                    foreignField: "business_id",
-                    as: "reviews"
-                }
-            },
-            { $unwind: "$reviews" },
-            {
-                $match: {
-                    "reviews.text": {
-                        $regex: /(wait(ed|ing)?|slow service)/i
-                    }
-                }
-            },
-            {
-                $group: {
-                    _id: "$business_id",
-                    business_name: { $first: "$name" },
-                    complaint_count: { $sum: 1 },
-                    avg_review_stars: { $avg: "$reviews.stars" },
-                    total_review_count: { $first: "$review_count" }
-                }
-            },
-            {
-                $addFields: {
-                    complaint_ratio: {
-                        $divide: ["$complaint_count", "$total_review_count"]
-                    },
-                    riskLevel: {
-                        $cond: [
-                            { $gt: [{ $divide: ["$complaint_count", "$total_review_count"] }, 0.3] },
-                            "high",
-                            {
-                                $cond: [
-                                    { $gt: [{ $divide: ["$complaint_count", "$total_review_count"] }, 0.1] },
-                                    "medium",
-                                    "low"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    business_name: 1,
-                    complaint_count: 1,
-                    avg_review_stars: 1,
-                    complaint_ratio: 1,
-                    riskLevel: 1
-                }
-            },
-            {
-                $out: "business_complaint_risk"
-            }
-        ]
+        // TODO: Create an aggregation pipeline to get wait-related complaints
+        //  - Join the `business` and `review` collections by their `business_id` fields using `$lookup`
+        //  - Filter for wait-related complaints using `$match` (e.g. text includes "wait", "took forever", "waited a long time", etc.)
+        //  - Use $group to group by business, collecting the following stats:
+        //    - `totalComplaints`: the total number of complaints for each business
+        //    - `totalReviews`: the total number of reviews for each business
+        //
+        //  - Compute the `complaint_ratio` as the ratio of `totalComplaints` to `totalReviews`
+        //  - Compute the `riskLevel` based on the `complaintRatio`:
+        //    - 'high' if the ratio is greater than 0.3
+        //    - 'medium' if the ratio is between 0.1 and 0.3
+        //    - 'low' if the ratio is less than 0.1
+        //
+        //  Use $project to return only the `businessName` and the `complaintRatio`
+        //  Sort by the `riskLevel`
 
-        ];
+    ];
 
     const results = await coll.aggregate(pipeline).toArray();
-    console.log('\nTask 2 Results:');
+    console.log('\nTask 3 Results:');
     console.table(results);
 }
