@@ -6,15 +6,32 @@ export const description = 'Find highly rated, reputable restaurants by city';
 export async function run() {
     const coll = await getBusinessCollection();
 
+// Solution to Task 1 - Find highly rated, reputable restaurants
     const pipeline = [
-        // TODO: Create an aggregation pipeline to get reputation scores for highly rated restaurants.
-        //
-        //  - Highly rated restaurants are businesses that meet the following criteria:
-        //    - defined as a restaurant (`categories` array must include 'Restaurants')
-        //    - have a 4.6 rating or higher (`stars`) AND more than 500 reviews (`review_count`)
-        //  - The `reputationScore` field is calculated as the product of `stars` and `review_count`, rounded to the nearest whole number (integer)
-        //
-        // TODO: Use $project to return only the `name`, `city`, and `reputationScore` fields, sorted by `reputationScore`
+        { $match: {
+                categories: "Restaurants", // ALTERNATE METHOD: can use $elemMatch or $in with array field
+                // categories: { $elemMatch: { $eq: "Restaurants" } },
+                // categories: { $in: ["Restaurants"] },
+                stars : { $gte: 4.6 },
+                review_count: { $gt: 500 }
+            }},
+
+        { $addFields: {   // ALTERNATE METHOD: can use $set instead of $addFields for the new field; subsequent syntax is the same
+                // { $set: {
+                reputationScore: {
+                    $round:  // NOTE: Use $round to get nearest whole number
+                        [{ $multiply: ['$stars', '$review_count']}, 0]
+                }
+            }},
+
+        { $project: {
+                _id: 0, // NOTE: must explicitly exclude the `_id` field
+                name: 1,
+                city: 1,
+                reputationScore: 1 // NOTE: must include the new reputationScore field in the output
+            }},
+
+        { $sort: { reputationScore: -1 } } // $sort set to -1 for descending order
     ];
 
     const results = await coll.aggregate(pipeline).toArray();

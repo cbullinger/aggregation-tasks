@@ -44,24 +44,18 @@ Connection code and data setup are already handled for you.
 5. Verify your setup:
 
    ```bash
-   npm start verifyConnection
+    npm run testConnection 
    ```
-
-## Logistics
-
-* **Time estimate:** 60 minutes (about 3 tasks).
-* **Session:** Virtual.
-* **Privacy:** All data and feedback are confidential.
 
 ## Running a Task
 
 To run any task, use:
 
 ```bash
-npm start <taskname>
+npm run task <taskNumeral>
 ```
 
-Replace `<taskname>` with the file name (without `.js`), for example `task1_simpleMatch`.
+For example `npm run task 1`.
 
 ---
 ### Sample Document
@@ -78,17 +72,7 @@ Replace `<taskname>` with the file name (without `.js`), for example `task1_simp
   "longitude":  -122.39612197,
   "stars":        4.5,
   "review_count": 1198,
-  "is_open":      1,
-  "attributes": {
-    "RestaurantsTakeOut": true,
-    "BusinessParking": {
-      "garage":    false,
-      "street":    true,
-      "validated": false,
-      "lot":       false,
-      "valet":     false
-    }
-  },
+  "is_open":      true,
   "categories": [
     "Mexican",
     "Burgers",
@@ -101,56 +85,49 @@ Replace `<taskname>` with the file name (without `.js`), for example `task1_simp
     "Thursday":  "10:00–21:00",
     "Friday":    "10:00–21:00",
     "Saturday":  "10:00–21:00",
-    "Sunday":    "11:00–18:00"
+    "Sunday":    "Closed"
   }
 }
 ```
 
-| Field          | Type           | Description                                          |
-| -------------- | -------------- | ---------------------------------------------------- |
-| `business_id`  | string         | 22-character unique business identifier              |
-| `name`         | string         | Business name                                        |
-| `address`      | string         | Full street address                                  |
-| `city`         | string         | City name                                            |
-| `state`        | string         | 2-character state code                               |
-| `postal_code`  | string         | ZIP or postal code                                   |
-| `latitude`     | float          | Geolocation latitude                                 |
-| `longitude`    | float          | Geolocation longitude                                |
-| `stars`        | float          | Average rating (½-star increments)                   |
-| `review_count` | integer        | Total number of reviews                              |
-| `is_open`      | integer        | 1 = open, 0 = closed                                 |
-| `attributes`   | object         | Key–value map of business attributes                 |
-| `categories`   | array[string]  | List of category labels                              |
-| `hours`        | object         | Operating hours by day (24-hour `"HH:MM–HH:MM"`)      |
+| Field          | Type          | Description                                      |
+| -------------- |---------------|--------------------------------------------------|
+| `business_id`  | string        | Unique business identifier                       |
+| `name`         | string        | Business name                                    |
+| `city`         | string        | City name                                        |
+| `stars`        | float         | Average rating (½-star increments)               |
+| `review_count` | integer       | Total number of reviews                          |
+| `is_open`      | bool          | true = open, false = closed                      |
+| `attributes`   | object        | Key–value map of business attributes             |
+| `categories`   | array[string] | List of category labels                          |
+| `hours`        | object        | Operating hours by day (24-hour `"HH:MM–HH:MM"`) |
 
 
 ### Sample Review Document
 
 ```json
 {
-  "review_id":   "r1g0v2x3y4z5a6b7c8d9e0f",
-  "user_id":     "u1a2b3c4d5e6f7g8h9i0j1k",
+  "review_id": "r1g0v2x3y4z5a6b7c8d9e0f",
+  "user_id": "u1a2b3c4d5e6f7g8h9i0j1k",
   "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
-  "stars":       5,
-  "date":        "2023-10-01",
-  "text":        "Great food and service!",
-  "useful":      10,
-  "funny":       2,
-  "cool":        5
+  "stars": 5,
+  "date": "2023-10-01",
+  "text": "Great food and service!",
+  "useful": 10,
+  "unhelpful": 2
 }
 ```
 
-| Field         | Type     | Description                                                    |
-| ------------- | -------- | -------------------------------------------------------------- |
-| `review_id`   | string   | 22-character unique review identifier                          |
-| `user_id`     | string   | 22-character unique user identifier (maps to `user.json`)      |
-| `business_id` | string   | 22-character business identifier (maps to `business.json`)     |
-| `stars`       | integer  | Star rating                                                    |
-| `date`        | string   | Review date in `YYYY-MM-DD` format                             |
-| `text`        | string   | Full review text                                               |
-| `useful`      | integer  | Number of “useful” votes received                              |
-| `funny`       | integer  | Number of “funny” votes received                               |
-| `cool`        | integer  | Number of “cool” votes received                                |
+| Field         | Type     | Description                                          |
+|---------------| -------- |------------------------------------------------------|
+| `review_id`   | string   | Uunique review identifier                            |
+| `user_id`     | string   | Unique user identifier (maps to `user.json`)         |
+| `business_id` | string   | Unique business identifier (maps to `business.json`) |
+| `stars`       | integer  | Star rating                                          |
+| `date`        | string   | Review date in `YYYY-MM-DD` format                   |
+| `text`        | string   | Full review text                                     |
+| `useful`      | integer  | Number of “useful” votes received                    |
+| `unhelpful`   | integer  | Number of “unhelpful” votes received                 |
 
 
 
