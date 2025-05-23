@@ -6,8 +6,16 @@ export const description = 'Find highly rated, reputable restaurants by city';
 export async function run() {
     const coll = await getBusinessCollection();
 
-// Solution to Task 1 - Find highly rated, reputable restaurants
     const pipeline = [
+
+        // TODO: Create an aggregation pipeline to get reputation scores for highly rated restaurants.
+
+        // Solution to Task 1 - Find highly rated, reputable restaurants
+        // 1. Filter for restaurants with a 4.6 rating or higher and more than 500 reviews
+        // 2. Calculate the reputation score as the product of stars and review_count
+        // 3. Project the name, city, and reputation score fields
+        // 4. Sort by reputation score in descending order
+
         { $match: {
                 categories: "Restaurants", // ALTERNATE METHOD: can use $elemMatch or $in with array field
                 // categories: { $elemMatch: { $eq: "Restaurants" } },
