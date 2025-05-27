@@ -14,13 +14,14 @@ Connection code and data setup are already handled for you.
 
 ```text
 .
-├── tasks/                      # The self-contained tasks to complete  
+├── tasks/                      # The self-contained tasks to complete 
+|   ├── taskDescriptions.md     # Task prompts and descriptions
 │   ├── task1.js
 │   ├── task2.js
 │   └── task3.js
 ├── config.js                   # Atlas connection logic
 ├── index.js                    # Entry point to run the tasks
-├── testConnection.js         # Tests connection and read access 
+├── testConnection.js           # Tests connection and read access 
 ├── package.json                
 └── README.md
 ```
@@ -62,14 +63,9 @@ For example `npm run task 1`.
 
 ```json
 {
-  "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
+  "business_id": "biz_223",
   "name":        "Garaje",
-  "address":     "475 3rd St",
   "city":        "San Francisco",
-  "state":       "CA",
-  "postal_code": "94107",
-  "latitude":    37.7817529521,
-  "longitude":  -122.39612197,
   "stars":        4.5,
   "review_count": 1198,
   "is_open":      true,
@@ -98,7 +94,6 @@ For example `npm run task 1`.
 | `stars`        | float         | Average rating (½-star increments)               |
 | `review_count` | integer       | Total number of reviews                          |
 | `is_open`      | bool          | true = open, false = closed                      |
-| `attributes`   | object        | Key–value map of business attributes             |
 | `categories`   | array[string] | List of category labels                          |
 | `hours`        | object        | Operating hours by day (24-hour `"HH:MM–HH:MM"`) |
 
@@ -107,9 +102,9 @@ For example `npm run task 1`.
 
 ```json
 {
-  "review_id": "r1g0v2x3y4z5a6b7c8d9e0f",
-  "user_id": "u1a2b3c4d5e6f7g8h9i0j1k",
-  "business_id": "tnhfDv5Il8EaGSXZGiuQGg",
+  "review_id": "rev_001",
+  "user_id": "user_004",
+  "business_id": "biz_003",
   "stars": 5,
   "date": "2023-10-01",
   "text": "Great food and service!",
@@ -120,7 +115,7 @@ For example `npm run task 1`.
 
 | Field         | Type     | Description                                          |
 |---------------| -------- |------------------------------------------------------|
-| `review_id`   | string   | Uunique review identifier                            |
+| `review_id`   | string   | Unique review identifier                             |
 | `user_id`     | string   | Unique user identifier (maps to `user.json`)         |
 | `business_id` | string   | Unique business identifier (maps to `business.json`) |
 | `stars`       | integer  | Star rating                                          |
