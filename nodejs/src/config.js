@@ -26,13 +26,6 @@ export async function getReviewCollection() {
     return client.db(dbName).collection('review');
 }
 
-/**
- * Returns the user collection.
- */
-export async function getUserCollection() {
-    await client.connect();
-    return client.db(dbName).collection('user');
-}
 
 /**
  * Close client.

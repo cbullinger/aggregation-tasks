@@ -1,7 +1,7 @@
 import {getBusinessCollection} from '../config.js';
 
 export const name = '1';
-export const description = 'Find highly rated, reputable restaurants by city';
+export const description = 'Find highly rated, reputable restaurants';
 
 export async function run() {
     const coll = await getBusinessCollection();
@@ -17,9 +17,9 @@ export async function run() {
         // 4. Sort by reputation score in descending order
 
         { $match: {
-                categories: "Restaurants", // ALTERNATE METHOD: can use $elemMatch or $in with array field
-                // categories: { $elemMatch: { $eq: "Restaurants" } },
-                // categories: { $in: ["Restaurants"] },
+                categories: 'Restaurants', // ALTERNATE METHOD: can use $elemMatch or $in with array field
+                // categories: { $elemMatch: { $eq: 'Restaurants' } },
+                // categories: { $in: ['Restaurants'] },
                 stars : { $gte: 4.6 },
                 review_count: { $gt: 500 }
             }},
@@ -43,5 +43,14 @@ export async function run() {
     ];
 
     const results = await coll.aggregate(pipeline).toArray();
-    console.table(results);
+    console.log(results);
 }
+
+// Running Task 1 — Find highly rated, reputable restaurants
+// [
+//   { name: 'Neko Sushi', city: 'Santa Barbara', reputationScore: 4841 },
+//   { name: 'Luna Pizzeria', city: 'San Diego', reputationScore: 4008 },
+//   { name: 'The Ramen Bar', city: 'San Diego', reputationScore: 3782 },
+//   { name: 'Pasta + Co.', city: 'Long Beach', reputationScore: 2962 },
+//   { name: 'Mama's Kitchen', city: 'San Diego', reputationScore: 2496 }
+// ]

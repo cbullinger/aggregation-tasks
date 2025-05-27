@@ -1,9 +1,9 @@
-import { getBusinessCollection, closeConnection } from './config.js';
+import {getBusinessCollection, closeConnection, getReviewCollection} from './config.js';
 
 async function runAggregation() {
     let coll;
     try {
-        coll = await getBusinessCollection();
+        coll = await getReviewCollection();
         console.log('Successfully connected to Atlas');
 
 
@@ -16,6 +16,10 @@ async function runAggregation() {
         topTen.forEach(({ _id, count }) =>
             console.log(`  ${_id}: ${count}`)
         );
+        // print the entire doc for one business
+        const oneBusiness = await coll.findOne();
+        console.log('One Business Document:', oneBusiness);
+
 } catch (err) {
         console.error('Error:', err);
     process.exitCode = 1;
