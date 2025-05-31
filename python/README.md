@@ -14,7 +14,7 @@ Connection code and data setup are already handled for you.
 
 ## Project Structure
 
-```
+```text
 .
 ├── .env.example           # Sample environment variables file
 ├── README.md             
@@ -32,9 +32,9 @@ Connection code and data setup are already handled for you.
 
 ## Setup
 
-1. Clone this repository, and navigate to the `nodejs` project root.
+1. Clone this repository, and navigate to the `python` project root.
    ```bash
-   git clone https://github.com/cbullinger/aggregation-tasks.git && cd python
+   git clone https://github.com/cbullinger/aggregation-tasks.git && cd aggregation-tasks/python
    ```
 
 2. Create and activate a virtual environment:
@@ -51,21 +51,15 @@ Connection code and data setup are already handled for you.
    pip install -r requirements.txt
    ```
 
-4. Configure environment variables using the provided `.env.example` file:
+4. Create a `.env` file in project root, and paste the `MONGO_URI` connection string 
+   and `DATABASE_NAME` provided by the moderator. 
 
-   ```bash
-   cp .env.example .env
-   ```
-
-   Open the `.env` and set the `MONGODB_URI` variable to the connection string 
-   provided by the moderator. 
-
-## Verify Your Setup
+## Verify Your Connection
 
 Run the connection test to ensure you can reach Atlas and read from the `business` collection:
 
 ```bash
-python main.py testConnection 
+python ping.py 
 ```
 
 You should see output like:
@@ -84,22 +78,22 @@ Connection closed
 
 ## Running a Task
 
-You can execute any task in the `tasks` module through the main entry point or as a module:
+You can execute any task in the `tasks` module through the main entry point, as a module, or directly in your IDE:
 
 * Main entry point:
 
   ```bash
-  python main.py task1   # Runs task1.py
-  python main.py task2   # Runs task2.py
-  python main.py task3   # Runs task3.py
+  python main.py 1   # Runs 1.py
+  python main.py 2   # Runs 2.py
+  python main.py 3   # Runs 3.py
   ```
 
 * Module:
 
   ```bash
-  python -m tasks.task1
-  python -m tasks.task2
-  python -m tasks.task3
+  python -m tasks.1
+  python -m tasks.2
+  python -m tasks.3
   ```
 
 ## Sample Documents

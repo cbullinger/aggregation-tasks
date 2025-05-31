@@ -34,7 +34,7 @@ Connection code and data setup are already handled for you.
 
 2. Clone this repository, and navigate to the `nodejs` project root.
    ```bash
-   git clone https://github.com/cbullinger/aggregation-tasks.git && cd nodejs
+   git clone https://github.com/cbullinger/aggregation-tasks.git && cd aggregation-tasks/nodejs
    ```
 3. Install dependencies:
    ```bash
