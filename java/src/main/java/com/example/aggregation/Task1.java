@@ -19,9 +19,7 @@ import org.bson.Document;
      3. Return only the `name`, `city`, and `reputationScore` fields
      4. Sort by `reputationScore` in descending order
 
- See:
-     - Aggregation: https://www.mongodb.com/docs/drivers/java/sync/current/aggregation/
-     - Aggregates Builders: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
+ See: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
  */
 
 public class Task1 {
@@ -35,7 +33,7 @@ public class Task1 {
 //            var pipeline =
 //                    Arrays.asList(
 
-            // TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P1`
+// TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P1`
 
 //            );
 
