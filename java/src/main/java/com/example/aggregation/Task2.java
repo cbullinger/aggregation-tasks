@@ -22,9 +22,7 @@ import org.bson.Document;
   6. Return only the unique `businessName`, `city`, and`waitReviewCount` fields
   7. Sort by `waitReviewCount` in descending order
 
- See:
- - Aggregation: https://www.mongodb.com/docs/drivers/java/sync/current/aggregation/
- - Aggregates Builders: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
+ See: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
 */
 
 public class Task2 {
@@ -38,7 +36,7 @@ public class Task2 {
 //            var pipeline =
 //                    Arrays.asList(
 
-            // TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P2`
+// TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P2`
 
 //            );
 
