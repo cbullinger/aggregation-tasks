@@ -2,7 +2,7 @@
 
 This study will help us learn how you use MongoDB documentation to build aggregation pipelines using the [MongoDB Java (Sync) driver](https://www.mongodb.com/docs/drivers/java/sync/current/).
 
-You’ll work with a subset of the Yelp sample dataset (the `business` and `review` collections) already loaded in MongoDB Atlas.
+You’ll work with a subset of the Yelp sample dataset (the `business` and `review` collections) already loaded in MongoDB Atlas. 
 Your only job is to write aggregation pipelines in the provided task files. Connection code and data setup are already handled.
 
 > **This is not a test of your skill or knowledge.** We want to see how you use our documentation. If you feel stuck or confused, that is our responsibility.
@@ -22,7 +22,7 @@ Your only job is to write aggregation pipelines in the provided task files. Conn
       │   ├── Task2.java                #  ...
       │   └── Task3.java                #  ...
       └── resources
-          └── application.properties
+          └── application.properties     
 ```
 
 ## Setup
@@ -42,22 +42,22 @@ You do not need to create your own Atlas cluster—connection details will be pr
 
 1. Clone the repository, and navigate to the `java` folder:
    ```bash
-   git clone https://github.com/cbullinger/aggregation-tasks.git
+   git clone https://github.com/cbullinger/aggregation-tasks.git 
    cd aggregation-tasks/java
    ```
 
 2. Compile dependencies:
 
     ```bash
-   mvn compile
+   mvn compile 
    ```
-3. Set your Atlas connection string (provided by the moderator):
+3. Create a `.env` file in the project root and paste the `MONGODB_URI` environment variable provided by the moderator. 
+
+   It should look similar to:
 
    ```text
-    export MONGODB_URI="mongodb+srv://<username>:<password>@cluster0.example.mongodb.net"
-    ```
-
-   Alternatively, open `src/main/resources/application.properties` and paste the URI.
+   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.example.mongodb.net
+   ```
 
 ### Verify Connection
 
@@ -65,15 +65,16 @@ Run the TestConnection class to confirm you can read from `yelp.business`:
 
 ```bash
 mvn compile
-mvn exec:java -Dexec.mainClass="com.example.aggregation.TestConnection"
+mvn exec:java -Ptest
 ```
 
 You should see output similar to:
 
 ```text
-INFO  TestConnection - Connected to 'yelp.business'. Document count: 4523
-INFO  TestConnection - Sample document: { "business_id": "Xxx...", "name": "...", ... }
-INFO  TestConnection - MongoClient closed.
+Successfully connected to MongoDB.
+100 documents found in 'business' collection.
+{"_id": {"$oid": "682349c4bf914db9e6205235"}, "business_id": "biz_014", "name": "Balance Acupuncture", "city": "Fresno", "is_open": false, "stars": 3.0, "categories": ["Acupuncture", "Wellness"], "hours": {"monday": "09:00-17:00", "tuesday": "09:00-17:00", "wednesday": "09:00-17:00", "thursday": "09:00-17:00", "friday": "09:00-17:00", "saturday": "10:00-14:00", "sunday": "10:00-14:00"}, "review_count": 526}
+MongoClient closed.
 ```
 
 If you see errors, check that:
@@ -84,7 +85,7 @@ If you see errors, check that:
 
 ## Tasks
 
-There are three tasks (`Task1`, `Task2`, `Task3`).
+There are three tasks (`Task1`, `Task2`, `Task3`). 
 Each file has a `// TODO` placeholder where you should write your aggregation pipeline logic.
 
 > **NOTE:** You only need to focus on building the aggregation stages. All connection setup is done for you.
@@ -105,7 +106,7 @@ mvn exec:java -P1
 # Run Task2
 mvn exec:java -P2
 
-# Run Task3
+# Run Task3 
 mvn exec:java -P3
 ```
 
@@ -131,26 +132,26 @@ You'll work with two collections: `business` and `review`. Below are sample docu
     "Restaurants"
   ],
   "hours": {
-    "Monday":    "10:00-21:00",
-    "Tuesday":   "10:00-21:00",
-    "Wednesday": "10:00-21:00",
-    "Thursday":  "10:00-21:00",
-    "Friday":    "10:00-21:00",
-    "Saturday":  "10:00-21:00",
+    "Monday":    "10:00–21:00",
+    "Tuesday":   "10:00–21:00",
+    "Wednesday": "10:00–21:00",
+    "Thursday":  "10:00–21:00",
+    "Friday":    "10:00–21:00",
+    "Saturday":  "10:00–21:00",
     "Sunday":    "Closed"
   }
 }
 ```
 
 | Field          | Type           | Description                        |
-| -------------- | -------------- | ---------------------------------- |
+| -------------- |----------------| ---------------------------------- |
 | `business_id`  | string         | Unique business identifier         |
 | `name`         | string         | Business name                      |
 | `city`         | string         | City name                          |
 | `stars`        | double         | Average rating (½-star increments) |
 | `review_count` | integer        | Total number of reviews            |
 | `is_open`      | boolean        | `true` = open, `false` = closed    |
-| `categories`   | array[string]  | List of category labels            |
+| `categories`   | array\[string] | List of category labels            |
 
 ### `review` Collection
 
@@ -168,12 +169,12 @@ You'll work with two collections: `business` and `review`. Below are sample docu
 ```
 
 | Field         | Type    | Description                          |
-| ------------- | ------- | ------------------------------------ |
+| ------------- |---------| ------------------------------------ |
 | `review_id`   | string  | Unique review identifier             |
 | `user_id`     | string  | Unique user identifier               |
 | `business_id` | string  | Unique business identifier           |
 | `stars`       | double  | Star rating                          |
 | `date`        | string  | Review date (`YYYY-MM-DD`)           |
 | `text`        | string  | Full review text                     |
-| `useful`      | integer | Number of "useful" votes received    |
-| `unhelpful`   | integer | Number of "unhelpful" votes received |
+| `useful`      | integer | Number of “useful” votes received    |
+| `unhelpful`   | integer | Number of “unhelpful” votes received |
