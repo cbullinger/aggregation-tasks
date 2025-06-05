@@ -1,9 +1,12 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # loads .env from project root
+load_dotenv()
 
-MONGODB_URI = os.getenv("MONGODB_URI")
+# TODO Set connection string
+uri = "PASTE-CONNECTION-STRING-HERE"
+
+MONGODB_URI = os.getenv("MONGODB_URI", uri)
 if not MONGODB_URI:
     raise RuntimeError("MONGODB_URI must be set in .env")
 

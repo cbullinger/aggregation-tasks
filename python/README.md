@@ -30,7 +30,7 @@ Your only job is to write aggregation pipelines in the provided task files. Conn
 You must have the following:
 - [Python3 version 3.8 or later](https://www.python.org/downloads/) installed
 - [pip](https://pip.pypa.io/en/stable/installation/) installed
-- An IDE that can run Python code (e.g. PyCharm or VS Codek)
+- An IDE that can run Python code (e.g. PyCharm or VS Code)
 - A web browser
 
 > NOTE: During the session, please disable any AI-assisted code tools (Copilot, etc.).
@@ -58,17 +58,9 @@ You do not need to create your own Atlas cluster—connection details will be pr
    pip3 install -r requirements.txt
    ```
 
-4. Create a `.env` file in project root, and paste the `MONGO_URI` connection string
-   and `DATABASE_NAME` provided by the moderator.
+4. Open `config.py` and set the `uri` variable to the connection string provided by the moderator.
 
-   It should look similar to:
-
-   ```dotenv
-   MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net
-   DATABASE_NAME=db_name
-    ```
-
-### Verify Connection
+### (Optional) Verify Connection
 
 Run the following to confirm you can read from `yelp.business`:
 

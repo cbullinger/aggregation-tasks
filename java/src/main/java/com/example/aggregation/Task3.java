@@ -28,9 +28,7 @@ import org.bson.Document;
       7. Return the business `name`, `city`, `oneStarRatio`, and `customerExperience` fields
       8. Sort by `oneStarRatio` descending
 
-See:
- - Aggregation: https://www.mongodb.com/docs/drivers/java/sync/current/aggregation/
- - Aggregates Builders: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
+See: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
 */
 
 public class Task3 {
@@ -44,7 +42,7 @@ public class Task3 {
 //            var pipeline =
 //                    Arrays.asList(
 
-            // TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P2`
+// TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P3`
 
 //            );
 
