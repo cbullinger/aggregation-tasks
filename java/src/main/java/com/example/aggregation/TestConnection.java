@@ -7,49 +7,44 @@ import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * TestConnection.java
- *
- * Verifies that we can connect to MongoDB Atlas, read the "yelp" database
- * and the "business" collection. Prints the total count and one sample document.
- *
- * Requires:
- *   - MongoClientProvider (which reads `mongodb.uri` from application.properties or MONGODB_URI)
- *   - SLF4J + Logback on the classpath
- *
- * Usage:
- *   mvn exec:java -Dexec.mainClass="com.example.yelpstudy.TestConnection"
- */
+// To test connection, compile and run: `mvn exec:java -Ptest`
+
 public class TestConnection {
     private static final Logger LOGGER = LoggerFactory.getLogger(TestConnection.class);
 
     public static void main(String[] args) {
-        // 1. Obtain a MongoClient (singleton) from our provider
-        MongoClient mongoClient = MongoClientProvider.getClient();
 
-        try {
-            // 2. Get the "yelp" database and "business" collection
+        try (MongoClient mongoClient = MongoClientProvider.getClient()) {
+
             MongoDatabase database = mongoClient.getDatabase("yelp");
             MongoCollection<Document> businessColl = database.getCollection("business");
 
-            // 3. Count documents in "business"
-            long count = businessColl.countDocuments();
-            LOGGER.info("Connected to 'yelp.business'. Document count: {}", count);
+            if (mongoClient != null) {
+                LOGGER.info("Successfully connected to MongoDB.");
+                System.out.println("Successfully connected to MongoDB.");
+            } else {
+                LOGGER.error("Failed to connect to MongoDB.");
+                return;
+            }
 
-            // 4. Retrieve one sample document (if any)
+            long count = businessColl.countDocuments();
+            System.out.println(count + " documents found in 'business' collection.");
+
             Document sample = businessColl.find().first();
             if (sample != null) {
-                LOGGER.info("Sample document: {}", sample.toJson());
+                System.out.println(sample.toJson());
             } else {
                 LOGGER.warn("'business' collection is empty or no documents found.");
+                System.out.println("'business' collection is empty or no documents found.");
             }
 
         } catch (Exception e) {
             LOGGER.error("Error while testing MongoDB connection:", e);
         } finally {
             // 5. Always close the client when done
-            mongoClient.close();
             LOGGER.info("MongoClient closed.");
+            System.out.println("MongoClient closed.");
         }
+        System.exit(0);
     }
 }
