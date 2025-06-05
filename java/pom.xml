@@ -38,6 +38,13 @@
             <version>${slf4j.version}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- .env support -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,6 +96,12 @@
             <id>3</id>
             <properties>
                 <exec.mainClass>Task3</exec.mainClass>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <exec.mainClass>TestConnection</exec.mainClass>
             </properties>
         </profile>
     </profiles>
