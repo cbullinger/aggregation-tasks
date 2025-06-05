@@ -7,18 +7,15 @@ import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.Duration;
-import java.util.Properties;
 
 
 public final class MongoClientProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(MongoClientProvider.class);
-    private static final String PROPS_FILE = "/application.properties";    private static final String MONGODB_URI_KEY = "mongodb.uri";
 
     static volatile MongoClient mongoClient;
 
@@ -42,14 +39,18 @@ public final class MongoClientProvider {
     }
 
     /**
-     * Creates and configures a MongoClient based on application.properties / env var.
+     * Creates and configures a MongoClient based on env var.
      * @return an initialized MongoClient
      */
     private static MongoClient createClient() {
-        String uri = loadUriFromProperties();
+        String uri = System.getenv("MONGODB_URI");
         if (uri == null || uri.isBlank()) {
-            LOGGER.error("No 'mongodb.uri' provided in application.properties or environment variable.");
-            throw new IllegalStateException("Missing MongoDB URI. Set environment variable MONGODB_URI or application.properties.");
+            Dotenv dotenv = Dotenv.load();
+            uri = dotenv.get("MONGODB_URI");
+        }
+        if (uri == null || uri.isBlank()) {
+            LOGGER.error("No 'MONGODB_URI' provided in environment or .env file.");
+            throw new IllegalStateException("Missing MongoDB URI. Set MONGODB_URI in environment or .env file.");
         }
 
         ConnectionString connectionString = new ConnectionString(uri);
@@ -71,27 +72,4 @@ public final class MongoClientProvider {
         return MongoClients.create(settings);
     }
 
-    /**
-     * Loads application.properties from the classpath and returns the "mongodb.uri" value.
-     */
-    private static String loadUriFromProperties() {
-        Properties props = new Properties();
-        try (InputStream in = MongoClientProvider.class.getResourceAsStream(PROPS_FILE)) {
-            if (in == null) {
-                LOGGER.warn("application.properties not found on classpath.");
-                return System.getenv("MONGODB_URI");
-            }
-            props.load(in);
-            // First look for property; if empty, fallback to environment variable
-            String uri = props.getProperty(MONGODB_URI_KEY);
-            if (uri != null && !uri.isBlank()) {
-                return uri;
-            }
-            return System.getenv("MONGODB_URI");
-        } catch (IOException e) {
-            LOGGER.error("Failed to load application.properties", e);
-            // fallback to environment variable
-            return System.getenv("MONGODB_URI");
-        }
-    }
 }
