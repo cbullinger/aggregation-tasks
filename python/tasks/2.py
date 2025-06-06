@@ -30,9 +30,35 @@ def run():
     coll = db.business
 
     pipeline = [
-
-        # TODO: Add your aggregation stages here, then run the file: `python3 main.py 2`
-
+        {"$match": {
+            "is_open": True,
+            "categories": "Acupuncture"
+        }},
+        {"$lookup": {
+            "from": "review",
+            "localField": "business_id",
+            "foreignField": "business_id",
+            "as": "reviews"
+        }},
+        {"$unwind": "$reviews"},
+        {"$match": {
+            "reviews.text": {
+                "$regex": r"(wait(ed|ing)?|slow service)",
+                "$options": "i"
+            }
+        }},
+        {"$group": {
+            "_id": "$name",
+            "city": {"$first": "$city"},
+            "waitReviewCount": {"$sum": 1}
+        }},
+        {"$project": {
+            "_id": 0,
+            "businessName": "$_id",
+            "city": 1,
+            "waitReviewCount": 1
+        }},
+        {"$sort": {"waitReviewCount": -1}}
     ]
 
     results = list(coll.aggregate(pipeline))
