@@ -7,10 +7,10 @@ def get_client():
         client = MongoClient(
             MONGODB_URI,
             tlsCAFile=certifi.where(),
-            serverSelectionTimeoutMS=5000,   # 5s timeout
-            connectTimeoutMS=5000            # also 5s on initial TCP connect
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000
         )
-        # force a quick “ping” to confirm
+
         client.admin.command("ping")
         return client
     except errors.ServerSelectionTimeoutError as err:
