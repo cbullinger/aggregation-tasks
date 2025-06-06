@@ -7,12 +7,9 @@ def main():
     client = None
     try:
         client = get_client()
-
-        # Ping server
         client.admin.command("ping")
         print("Successfully connected to Atlas")
 
-        # Access database and collection
         db = client[DATABASE_NAME]
         coll = db.business
 
