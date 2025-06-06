@@ -15,13 +15,13 @@ Your only job is to write aggregation pipelines in the provided task files. Conn
 .
 ├── tasks/                  # Self-contained tasks to complete
 |   ├──  __init__.py
-|   ├──  testConnection.py  # Verify Atlas connection
 |   ├──  task1.py
 |   ├──  task2.py
 |   └── task3.py
 ├── requirements.txt
-├── config.py
-├── mongo_client.py        # Atlas connection logic and client setup
+├── config.py               # Set Atlas connection string
+├── ping.py                 # Verify Atlas connection
+├── mongo_client.py        
 └── main.py
 ```
 
