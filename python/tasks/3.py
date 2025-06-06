@@ -34,14 +34,102 @@ def run():
 
     pipeline = [
 
-        # TODO: Add your aggregation stages here, then run the file to test your code.
-        # NOTE: This task connects to the 'review' collection
+        # NOTE: Group by `review` collection, NOT `business`
+        # 1. Count total and one-star reviews per business
+        {"$group": {
+            "_id": "$business_id",
+            "totalReviews": {"$sum": 1},
+            "oneStarReviews": {
+                "$sum": {
+                    "$cond": [{"$eq": ["$stars", 1]}, 1, 0]
+                }
+            }
+        }},
+        # 2. Compute oneStarRatio
+        {"$addFields": {
+            "oneStarRatio": {
+                "$cond": [
+                    {"$eq": ["$totalReviews", 0]}, 0,
+                    {"$divide": ["$oneStarReviews", "$totalReviews"]}
+                ]
+            }
+        }},
+        # 3. Bucket into customerExperience
+        {"$addFields": {
+            "customerExperience": {
+                "$switch": {
+                    "branches": [
+                        {"case": {"$lte": ["$oneStarRatio", 0.05]}, "then": "Excellent"},
+                        {"case": {"$lte": ["$oneStarRatio", 0.15]}, "then": "Good"},
+                        {"case": {"$lte": ["$oneStarRatio", 0.25]}, "then": "Fair"}
+                    ],
+                    "default": "Poor"
+                }
+            }
+        }},
+        # 4. Join with business collection
+        {"$lookup": {
+            "from": "business",
+            "localField": "_id",
+            "foreignField": "business_id",
+            "as": "biz"
+        }},
+        {"$unwind": "$biz"},
+        # 5. Filter for Health & Medical + Poor experience
+        {"$match": {
+            "customerExperience": "Poor",
+            "biz.categories": "Health & Medical"
+        }},
+        # 6. Collapse back to one doc per business
+        {"$group": {
+            "_id": "$biz.name",
+            "city": {"$first": "$biz.city"},
+            "oneStarRatio": {"$first": "$oneStarRatio"},
+            "customerExperience": {"$first": "$customerExperience"}
+        }},
+        # 7. Shape output & sort
+        {"$project": {
+            "_id": 0,
+            "businessName": "$_id",
+            "city": 1,
+            "oneStarRatio": 1,
+            "customerExperience": 1
+        }},
+        {"$sort": {"oneStarRatio": -1}}
     ]
 
-    results = list(coll.aggregate(pipeline))
+    results = list(db.review.aggregate(pipeline))
     print(json.dumps(results, indent=2))
 
     client.close()
 
 if __name__ == "__main__":
     run()
+# Output:
+# [
+#   {
+#     "city": "Montecito",
+#     "oneStarRatio": 0.5,
+#     "customerExperience": "Poor",
+#     "businessName": "WellCare Clinic"
+#   },
+#   {
+#     "city": "Long Beach",
+#     "oneStarRatio": 0.3076923076923077,
+#     "customerExperience": "Poor",
+#     "businessName": "Harmony Medical"
+#   },
+#   {
+#     "city": "Fresno",
+#     "oneStarRatio": 0.3,
+#     "customerExperience": "Poor",
+#     "businessName": "Sunrise Family Practice"
+#   },
+#   {
+#     "city": "Long Beach",
+#     "oneStarRatio": 0.27906976744186046,
+#     "customerExperience": "Poor",
+#     "businessName": "Rapid Relief Health"
+#   }
+# ]
+
