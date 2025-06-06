@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const uri = 'mongodb+srv://nodejs:0Y0vD7Cc5lCD4JPk@cluster0.ztsso0w.mongodb.net'; // Replace with your MongoDB connection string
+const uri = 'PASTE-CONNECTION-STRING-HERE'; // Replace with your MongoDB connection string
 
 const client = new MongoClient(uri);
 const dbName = 'yelp';
