@@ -1,11 +1,17 @@
 # MongoDB Aggregation Pipeline Study
 
-This repo contains the following driver-based projects as part of a
-user research initiative:
+This repo contains the following driver-based projects used in a user research initiative:
 
-- `java`
-- `node`
-- `python`
+- [`java`](/java)
+- [`node`](/node)
+- [`python`](/python)
+
+## Tasks 
+
+
+Each project contains three tasks, each has a task prompt and a `TODO` placeholder indicating where to add the aggregation pipeine logic. 
+
+> **NOTE:** You only need to focus on building the aggregation stages. All connection setup is done for you.
 
 ## Data Model
 

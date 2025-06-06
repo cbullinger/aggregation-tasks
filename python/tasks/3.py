@@ -34,7 +34,7 @@ def run():
 
     pipeline = [
 
-        # TODO: Add your aggregation stages here, then run the file to test your code.
+        # TODO: Add your aggregation stages here, then run the file: `python3 main.py 3`
         # NOTE: This task connects to the 'review' collection
     ]
 

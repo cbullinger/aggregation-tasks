@@ -1,11 +1,6 @@
 import { MongoClient } from 'mongodb';
-import * as dotenv from "dotenv";
-dotenv.config();
 
-const uri = process.env.MONGODB_URI;
-if (!uri) {
-    throw new Error('MONGODB_URI must be set');
-}
+const uri = 'mongodb+srv://nodejs:0Y0vD7Cc5lCD4JPk@cluster0.ztsso0w.mongodb.net'; // Replace with your MongoDB connection string
 
 const client = new MongoClient(uri);
 const dbName = 'yelp';

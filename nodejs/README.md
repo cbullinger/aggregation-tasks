@@ -46,18 +46,9 @@ You do not need to create your own Atlas cluster—connection details will be pr
    ```bash
    npm install
    ```
-3. Set your `MONGODB_URI` variable to the connection string provided by the moderator:
+3. Set the MongoDB connection string:
 
-   ```text
-    export MONGODB_URI="mongodb+srv://<username>:<password>@cluster0.example.mongodb.net"
-    ```
-
-   Alternatively, you can create a `.env` file in the project root and
-   set the connection string similar to:
-
-   ```dotenv
-    MONGODB_URI="mongodb+srv://<username>:<password>@cluster0.example.mongodb.net"
-   ```
+   Open `config.js` and paste the connection string provided by the moderator.
 
 4. Verify your setup:
 
