@@ -3,6 +3,8 @@
 This study will help us learn how you use MongoDB documentation to build aggregation pipelines using the [MongoDB PyMongo driver](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/).
 
 You’ll work with a subset of the Yelp sample dataset (the `business` and `review` collections) already loaded in MongoDB Atlas.
+See the [Data Model](#data-model) at the end of this README.md for example structure and field descriptions. 
+
 Your only job is to write aggregation pipelines in the provided task files. Connection code and data setup are already handled.
 
 > **This is not a test of your skill or knowledge.** We want to see how you use our documentation. If you feel stuck or confused, that is our responsibility.
@@ -37,14 +39,14 @@ You must have the following:
 
 You do not need to create your own Atlas cluster—connection details will be provided.
 
-### Installation Steps
+### Install
 
-1. Clone this repository, and navigate to the `python` project root:
+1. Clone this repository:
    ```bash
-   git clone https://github.com/cbullinger/aggregation-tasks.git && cd aggregation-tasks/python
+   git clone https://github.com/cbullinger/aggregation-tasks.git
    ```
 
-2. (Recommended) Create and activate a virtual environment:
+2. From the `python` project root, create and activate a virtual environment:
 
    ```bash
    python3 -m venv .venv
@@ -58,34 +60,34 @@ You do not need to create your own Atlas cluster—connection details will be pr
    pip3 install -r requirements.txt
    ```
 
-4. Open `config.py` and set the `uri` variable to the connection string provided by the moderator.
+4. Set the MongoDB connection string: 
+    
+    Open `config.py` and paste the connection string provided by the moderator.
 
-### (Optional) Verify Connection
+5. Run the following to confirm you can read from `yelp.business`:
 
-Run the following to confirm you can read from `yelp.business`:
+   ```bash
+   python3 ping.py
+   ```
 
-```bash
-python3 ping.py
-```
+   You should see output similar to:
 
-You should see output similar to:
-
-```
-Successfully connected to Atlas
-Top 5 Cities by Business Count:
-  San Diego: 20
-  Long Beach: 17
-  Fresno: 16
-  Santa Barbara: 14
-  Montecito: 12
-
-Connection closed
-```
-If you see errors, check that:
-
-- The connection string is correct.
-- IP is whitelisted in Atlas.
-- The virtual environment is successfully set up with project dependencies.
+   ```
+   Successfully connected to Atlas
+   Top 5 Cities by Business Count:
+     San Diego: 20
+     Long Beach: 17
+     Fresno: 16
+     Santa Barbara: 14
+     Montecito: 12
+   
+   Connection closed
+   ```
+   If you see errors, check that:
+   
+   - The connection string is correct.
+   - IP is whitelisted in Atlas.
+   - The virtual environment is successfully set up with project dependencies.
 
 ## Tasks
 
