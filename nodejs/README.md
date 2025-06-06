@@ -28,7 +28,7 @@ Your only job is to write aggregation pipelines in the provided task files. Conn
 You must have the following:
 - [Node.js 16.20.1 or later](https://nodejs.org/en/download/) installed
 - [npm (Node Package Manager)](https://www.npmjs.com/get-npm) installed
-- An IDE that can run Python code (e.g. PyCharm or VS Code)
+- An IDE that can run JS code (e.g. WebStorm or VS Code)
 - A web browser
 
 > NOTE: During the session, please disable any AI-assisted code tools (Copilot, etc.).
