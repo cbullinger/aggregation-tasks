@@ -1,112 +1,281 @@
-# Configuration for copying code examples from aggregation-tasks repository
-# Repository: https://github.com/cbullinger/aggregation-tasks
-# 
-# This repository contains MongoDB aggregation pipeline examples in multiple languages:
-# - java/
-# - nodejs/
-# - python/
+# MFlix Configuration with File Ignoring Examples
+# Source: cbullinger/aggregation-tasks
+# This config demonstrates how to ignore specific files and directories
 
 source_repo: "cbullinger/aggregation-tasks"
 source_branch: "main"
 
 copy_rules:
-  # Rule 1: Match all language directories with regex pattern
-  # This pattern extracts the language name and file path
-  - name: "aggregation-language-examples"
+  # ============================================================================
+  # Java Target: cbullinger/sample-app-java-mflix
+  # ============================================================================
+  
+  # Rule 1: Copy client directory (IGNORE build artifacts and dependencies)
+  - name: "mflix-client-to-java"
     source_pattern:
-      type: "regex"
-      pattern: "^(?P<lang>java|nodejs|python)/(?P<file>.+)$"
+      type: "prefix"
+      pattern: "mflix/client/"
     targets:
-      - repo: "vector-search"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "source/code-examples/aggregation/${lang}/${file}"
+        path_transform: "client/${file}"
         commit_strategy:
           type: "pull_request"
-          pr_title: "Update ${lang} aggregation examples"
+          pr_title: "Update MFlix client from aggregation-tasks"
           pr_body: |
-            Automated update of ${lang} aggregation pipeline examples
+            Automated update of MFlix Next.js client
             
             Source: ${source_repo}
-            Files updated: ${file_count}
-          auto_merge: true
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
         deprecation_check:
           enabled: true
           file: "deprecated_examples.json"
 
-  # Rule 2: Match specific language - Java only
-  - name: "java-aggregation-examples"
+  # Copy Java server (ignore .gitignore in server dir)
+  - name: "java-server"
     source_pattern:
       type: "regex"
-      pattern: "^java/(?P<file>.+\\.java)$"
+      pattern: "^mflix/server/java-spring/(?P<file>(?!\\.gitignore$).+)$"
     targets:
-      - repo: "cbullinger/vector-search"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "java/${file}"
+        path_transform: "server/${relative_path}"
         commit_strategy:
           type: "pull_request"
-          pr_title: "Update Java aggregation examples"
-          pr_body: "Automated update of Java aggregation pipeline examples"
-          auto_merge: false
-
-  # Rule 3: Match specific language - Node.js only
-  - name: "nodejs-aggregation-examples"
-    source_pattern:
-      type: "regex"
-      pattern: "^nodejs/(?P<file>.+\\.(js|ts))$"
-    targets:
-      - repo: "cbullinger/vector-search"
-        branch: "main"
-        path_transform: "node/${file}"
-        commit_strategy:
-          type: "pull_request"
-          pr_title: "Update Node.js aggregation examples"
-          pr_body: "Automated update of Node.js aggregation pipeline examples"
-          auto_merge: false
-
-  # Rule 4: Match specific language - Python only
-  - name: "python-aggregation-examples"
-    source_pattern:
-      type: "regex"
-      pattern: "^python/(?P<file>.+\\.py)$"
-    targets:
-      - repo: "cbullinger/vector-search"
-        branch: "main"
-        path_transform: "python/${file}"
-        commit_strategy:
-          type: "pull_request"
-          pr_title: "Update Python aggregation examples"
-          pr_body: "Automated update of Python aggregation pipeline examples"
-          auto_merge: false
-
-  # Rule 5: Alternative pattern - match with subdirectories
-  # Use this if the repository structure has subdirectories within language folders
-  - name: "aggregation-with-subdirs"
-    source_pattern:
-      type: "regex"
-      pattern: "^(?P<lang>java|nodejs|python)/(?P<subdir>[^/]+)/(?P<file>.+)$"
-    targets:
-      - repo: "cbullinger/vector-search"
-        branch: "main"
-        path_transform: "internal/aggregation/${lang}/${subdir}/${file}"
-        commit_strategy:
-          type: "pull_request"
-          pr_title: "Update ${lang} aggregation examples (${subdir})"
+          pr_title: "Update MFlix Java server from aggregation-tasks"
           pr_body: |
-            Automated update of ${lang} aggregation examples
-            Category: ${subdir}
-            Files updated: ${file_count}
-          auto_merge: true
+            Automated update of MFlix Java/Spring Boot server
 
-  # Rule 7: Prefix pattern - simplest approach
-  - name: "all-languages-prefix"
+            Source: ${source_repo}
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 3: Copy Java README (renaming to just README.md)
+  - name: "mflix-java-readme"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/README-JAVA-SPRING.md"
+    targets:
+      - repo: "cbullinger/sample-app-java-mflix"
+        branch: "main"
+        path_transform: "README.md"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update README from aggregation-tasks"
+          pr_body: |
+            Automated update of README
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 4: Copy Java .gitignore (renaming to just .gitignore)
+  - name: "mflix-java-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-java"
+    targets:
+      - repo: "cbullinger/sample-app-java-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update .gitignore from aggregation-tasks"
+          pr_body: |
+            Automated update of .gitignore
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # ============================================================================
+  # JavaScript Target: cbullinger/sample-app-nodejs-mflix
+  # ============================================================================
+
+  # Rule 5: Copy client directory to JavaScript target
+  - name: "mflix-client-to-js"
     source_pattern:
       type: "prefix"
-      pattern: "java"
+      pattern: "mflix/client/"
     targets:
-      - repo: "cbullinger/vector-search"
+      - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
-        path_transform: "source/code-examples/prefix/${relative_path}"
+        path_transform: "client/${relative_path}"
         commit_strategy:
-          type: "direct"
-          commit_message: "Update aggregation examples from ${source_repo}"
+          type: "pull_request"
+          pr_title: "Update MFlix client from aggregation-tasks"
+          pr_body: |
+            Automated update of MFlix Next.js client
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+          file: "deprecated_examples.json"
+
+  # Rule 6: Copy Express server files (removing the express subdirectory)
+  - name: "mflix-express-server"
+    source_pattern:
+      type: "prefix"
+      pattern: "mflix/server/express/(?P<file>(?!\\.gitignore$).+)$""
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: "server/${relative_path}"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update MFlix Express server from aggregation-tasks"
+          pr_body: |
+            Automated update of MFlix Express.js server
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 7: Copy JavaScript README (renaming to just README.md)
+  - name: "mflix-js-readme"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/README-JAVASCRIPT-EXPRESS.md"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: "README.md"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update README from aggregation-tasks"
+          pr_body: |
+            Automated update of README
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 8: Copy JavaScript .gitignore (renaming to just .gitignore)
+  - name: "mflix-js-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-js"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update .gitignore from aggregation-tasks"
+          pr_body: |
+            Automated update of .gitignore
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # ============================================================================
+  # Python Target: cbullinger/sample-app-python-mflix
+  # ============================================================================
+
+  # Rule 9: Copy client directory to Python target
+  - name: "mflix-client-to-python"
+    source_pattern:
+      type: "prefix"
+      pattern: "mflix/client/"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "client/${relative_path}"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update MFlix client from aggregation-tasks"
+          pr_body: |
+            Automated update of MFlix Next.js client
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+          file: "deprecated_examples.json"
+
+  # Rule 10: Copy Python server files (removing the python subdirectory)
+  - name: "mflix-python-server"
+    source_pattern:
+      type: "prefix"
+      pattern: "mflix/server/python/(?P<file>(?!\\.gitignore$).+)$""
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "server/${relative_path}"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update MFlix Python server from aggregation-tasks"
+          pr_body: |
+            Automated update of MFlix Python/FastAPI server
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+            Commit: ${commit_sha}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 11: Copy Python README (renaming to just README.md)
+  - name: "mflix-python-readme"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/README-PYTHON-FASTAPI.md"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "README.md"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update README from aggregation-tasks"
+          pr_body: |
+            Automated update of README
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 12: Copy Python .gitignore (renaming to just .gitignore)
+  - name: "mflix-python-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-python"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          pr_title: "Update .gitignore from aggregation-tasks"
+          pr_body: |
+            Automated update of .gitignore
+
+            Source: ${source_repo}
+            PR: #${pr_number}
+          auto_merge: false
+        deprecation_check:
+          enabled: true
 
