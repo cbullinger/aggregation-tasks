@@ -127,8 +127,8 @@ copy_rules:
   # Rule 6: Copy Express server files (removing the express subdirectory)
   - name: "mflix-express-server"
     source_pattern:
-      type: "prefix"
-      pattern: "mflix/server/express/(?P<file>(?!\\.gitignore$).+)$""
+      type: "regex"
+      pattern: "mflix/server/express/(?P<file>(?!\\.gitignore$).+)$"
     targets:
       - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
@@ -218,8 +218,8 @@ copy_rules:
   # Rule 10: Copy Python server files (removing the python subdirectory)
   - name: "mflix-python-server"
     source_pattern:
-      type: "prefix"
-      pattern: "mflix/server/python/(?P<file>(?!\\.gitignore$).+)$""
+      type: "regex"
+      pattern: "mflix/server/python//(?P<file>(?!\\.gitignore$).+)$"
     targets:
       - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
