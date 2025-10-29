@@ -6,7 +6,7 @@ source_repo: "cbullinger/aggregation-tasks"
 source_branch: "main"
 
 # OPTIONAL: Enable batch_by_repo to create ONE PR per target repo instead of multiple PRs
-# batch_by_repo: true
+batch_by_repo: true
 
 copy_rules:
   # ============================================================================
@@ -38,17 +38,18 @@ copy_rules:
           enabled: true
           file: "deprecated_examples.json"
 
-  # Rule 2: Copy Java server (ignore .gitignore in server dir)
+  # Rule 2: Copy Java server
   # FIX: Changed path_transform from "server/${relative_path}" to "server/${file}"
   # REASON: regex pattern with (?P<file>...) provides ${file}, not ${relative_path}
+  # FIX 2: Removed negative lookahead (?!...) - Go's regexp doesn't support it
   - name: "java-server"
     source_pattern:
       type: "regex"
-      pattern: "^mflix/server/java-spring/(?P<file>(?!\\.gitignore$).+)$"
+      pattern: "^mflix/server/java-spring/(?P<file>.+)$"
     targets:
       - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "server/${file}" 
+        path_transform: "server/${file}"  
         commit_strategy:
           type: "pull_request"
           pr_title: "Update MFlix Java server from aggregation-tasks"
@@ -134,14 +135,15 @@ copy_rules:
   # Rule 6: Copy Express server files (removing the express subdirectory)
   # FIX: Changed path_transform from "server/${relative_path}" to "server/${file}"
   # REASON: regex pattern with (?P<file>...) provides ${file}, not ${relative_path}
+  # FIX 2: Removed negative lookahead (?!...) - Go's regexp doesn't support it
   - name: "mflix-express-server"
     source_pattern:
       type: "regex"
-      pattern: "mflix/server/express/(?P<file>(?!\\.gitignore$).+)$"
+      pattern: "mflix/server/express/(?P<file>.+)$"
     targets:
       - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
-        path_transform: "server/${file}"  
+        path_transform: "server/${file}"  # ✅ FIXED: was ${relative_path}
         commit_strategy:
           type: "pull_request"
           pr_title: "Update MFlix Express server from aggregation-tasks"
@@ -228,14 +230,15 @@ copy_rules:
   # FIX 1: Removed double slash from pattern (python// → python/)
   # FIX 2: Changed path_transform from "server/${relative_path}" to "server/${file}"
   # REASON: regex pattern with (?P<file>...) provides ${file}, not ${relative_path}
+  # FIX 3: Removed negative lookahead (?!...) - Go's regexp doesn't support it
   - name: "mflix-python-server"
     source_pattern:
       type: "regex"
-      pattern: "mflix/server/python/(?P<file>(?!\\.gitignore$).+)$" 
+      pattern: "mflix/server/python/(?P<file>.+)$"  # ✅ FIXED: removed double slash and negative lookahead
     targets:
       - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
-        path_transform: "server/${file}"  
+        path_transform: "server/${file}"  # ✅ FIXED: was ${relative_path}
         commit_strategy:
           type: "pull_request"
           pr_title: "Update MFlix Python server from aggregation-tasks"
