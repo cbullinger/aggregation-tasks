@@ -1,81 +1,111 @@
-# MongoDB Aggregation Pipeline Study
+# Docs Sample Apps
 
-This repo contains the following driver-based projects used in a user research initiative:
+A repository of sample applications for the MongoDB documentation. This README
+describes internal details for the repository maintainers. If you are a developer
+having issues with the sample app, please refer to the `Issues` section below.
 
-- [`java`](/java)
-- [`node`](/node)
-- [`python`](/python)
+## Sample Apps
 
-## Tasks 
+This repository currently contains a single sample app using the `mflix` dataset.
 
+### MFlix Sample App
 
-Each project contains three tasks, each has a task prompt and a `TODO` placeholder indicating where to add the aggregation pipeine logic. 
+The sample app provides a Next.js frontend in the `client` directory, with the
+choice of three backend stacks in the `server` directory:
 
-> **NOTE:** You only need to focus on building the aggregation stages. All connection setup is done for you.
+- Java: Spring Boot
+- JavaScript: Express.js
+- Python: FastAPI
 
-## Data Model
+```
+├── mflix/
+│   ├── client/               # Next.js frontend - source for all `mflix` sample app backend repos
+│   └── server/
+│       ├── express/          # Express.js backend - source for sample-app-nodejs-mflix
+│       ├── java-spring/      # Java/Spring backend - source for sample-app-java-mflix
+│       └── python/           # Python/FastAPI backend - source for sample-app-python-mflix
+├── README.md
+├── copier-config.yaml
+└── deprecated_examples.json
+```
 
-All projects work with two collections: `business` and `review`. Below are sample documents and field descriptions.
+## Artifact Repositories
 
-### `business` Collection
+This repository serves as the source for the following artifact repositories:
+
+- Java: [mongodb/sample-app-java-mflix](https://github.com/mongodb/sample-app-java-mflix)
+- JavaScript: [mongodb/sample-app-nodejs-mflix](https://github.com/mongodb/sample-app-nodejs-mflix)
+- Python: [mongodb/sample-app-python-mflix](https://github.com/mongodb/sample-app-python-mflix)
+
+## Development
+
+When you merge to `main`, a copier tool copies the source from this repository
+to a target repository for each sample app. For configuration details, refer to
+`copier-config.yaml`.
+
+### Branching Model
+
+For development, work from the `development` branch. Make incremental PRs
+containing new features and bug fixes to `development`, *not* `main`.
+
+When all development work is complete, *then* create a release PR from
+`development` to `main`. Upon merging to `main,` the copier tool runs
+automatically. It creates a new PR in the target repository, which must be
+tested and merged manually.
+
+### Deleting Files
+
+If a PR from `development` to `main` deletes any files, this creates a new
+entry in the `deprecated_examples.json` file. This entry resembles:
 
 ```json
 {
-  "business_id": "biz_001",
-  "name":        "Garaje",
-  "city":        "San Francisco",
-  "stars":        4.5,
-  "review_count": 1198,
-  "is_open":      true,
-  "categories": [
-    "Mexican",
-    "Burgers",
-    "Restaurants"
-  ],
-  "hours": {
-    "Monday":    "10:00-21:00",
-    "Tuesday":   "10:00-21:00",
-    "Wednesday": "10:00-21:00",
-    "Thursday":  "10:00-21:00",
-    "Friday":    "10:00-21:00",
-    "Saturday":  "10:00-21:00",
-    "Sunday":    "Closed"
-  }
-}
+  "filename": "go/gcloud24march_v2.go",
+  "repo": "docs-code-examples-test-target",
+  "branch": "v2.2",
+  "deleted_on": "2025-03-24T18:16:30Z"
+},
 ```
 
-| Field          | Type           | Description                        |
-| -------------- | -------------- | ---------------------------------- |
-| `business_id`  | string         | Unique business identifier         |
-| `name`         | string         | Business name                      |
-| `city`         | string         | City name                          |
-| `stars`        | double         | Average rating (½-star increments) |
-| `review_count` | integer        | Total number of reviews            |
-| `is_open`      | boolean        | `true` = open, `false` = closed    |
-| `categories`   | array[string]  | List of category labels            |
+The copier tool does not delete files from the target repository. You must
+manually delete files from the target repository that are listed in
+`deprecated_examples.json`. This is an intentional step to avoid accidentally
+deleting files that are referred to in documentation. Review documentation
+references before deleting files.
 
-### `review` Collection
+## Release Process
 
-```json
-{
-  "review_id":   "rev_002",
-  "user_id":     "user_001",
-  "business_id": "biz_003",
-  "stars":       5,
-  "date":        "2023-10-01",
-  "text":        "Great food and service!",
-  "useful":      10,
-  "unhelpful":   2
-}
-```
+When you merge a release PR from `development` to `main`, the copier tool
+creates a new PR in the target repository. This PR must be tested and merged
+manually. This is an intentional design choice to ensure:
 
-| Field         | Type    | Description                          |
-| ------------- | ------- | ------------------------------------ |
-| `review_id`   | string  | Unique review identifier             |
-| `user_id`     | string  | Unique user identifier               |
-| `business_id` | string  | Unique business identifier           |
-| `stars`       | double  | Star rating                          |
-| `date`        | string  | Review date (`YYYY-MM-DD`)           |
-| `text`        | string  | Full review text                     |
-| `useful`      | integer | Number of "useful" votes received    |
-| `unhelpful`   | integer | Number of "unhelpful" votes received |
+- The sample app still functions as expected after copying.
+- Any documentation references are updated as part of the release process.
+
+To test and verify the PR, navigate to the target repository - see
+`Artifact Repositories` above. Perform the following checks:
+
+- [ ] Verify that the PR contains the expected changes.
+- [ ] Check out the PR locally.
+  - [ ] Build and test the changes.
+  - [ ] Run the tests
+  - [ ] Run the application and verify that it functions as expected.
+- [ ] Review the `deprecated_examples.json` file for any files that need to be
+  deleted. If files are deleted:
+  - [ ] Add a commit to the copier PR to delete the files from the target repository.
+- [ ] Merge the PR.
+
+## Issues
+
+If you are a developer having issues with the sample app, feel free to open an
+issue in this repository. Please include the following information:
+
+- [ ] The sample app you are using (Java, JavaScript, or Python)
+- [ ] The version of the MongoDB database you are using
+- [ ] The version of the MongoDB driver you are using
+- [ ] What type of deployment you're using (local, Atlas, etc.)
+- [ ] Any other relevant information that might help us reproduce the issue
+
+## Contributions
+
+We are not currently accepting public contributions to this repository.
