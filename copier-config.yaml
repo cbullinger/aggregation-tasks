@@ -1,77 +1,225 @@
-# Example configuration demonstrating batch_by_repo with batch_pr_config
-# This shows how to batch multiple copy rules into a single PR per target repo
-# with custom PR metadata and accurate file counts
+# MFlix Configuration with Batch PR Config
+# Source: cbullinger/aggregation-tasks
+# This config uses batch_pr_config to create ONE PR per target repo with accurate file counts
 
-source_repo: "mongodb/code-examples"
+source_repo: "cbullinger/aggregation-tasks"
 source_branch: "main"
 
 # Enable batching - all rules targeting the same repo will be combined into one PR
 batch_by_repo: true
 
-# Configure PR metadata for batched PRs
-# These templates will be rendered with accurate file counts after all files are collected
+# Configure PR metadata for batched PRs with accurate file counts
 batch_pr_config:
-  pr_title: "Update code examples from ${source_repo}"
+  pr_title: "Update MFlix application from aggregation-tasks"
   pr_body: |
-    🤖 Automated update of code examples
-    
+    🤖 Automated update of MFlix application files
+
     **Source Information:**
     - Repository: ${source_repo}
     - Branch: ${source_branch}
     - PR: #${pr_number}
     - Commit: ${commit_sha}
-    
+
     **Changes:**
     - Total files: ${file_count}
     - Target branch: ${target_branch}
-    
-    This PR includes files from multiple copy rules batched together for easier review.
-  commit_message: "Update examples from ${source_repo} PR #${pr_number} (${file_count} files)"
+
+    This PR includes client files, server files, README, and .gitignore updates.
+    All files have been automatically synchronized from the source repository.
+  commit_message: "Update MFlix from ${source_repo} PR #${pr_number} (${file_count} files)"
 
 copy_rules:
-  # Rule 1: Copy client files
-  - name: "client-files"
+  # ============================================================================
+  # Java Target: cbullinger/sample-app-java-mflix
+  # ============================================================================
+  
+  # Rule 1: Copy client directory
+  - name: "mflix-client-to-java"
     source_pattern:
       type: "prefix"
-      pattern: "examples/client/"
+      pattern: "mflix/client/"
     targets:
-      - repo: "mongodb/docs"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "source/code-examples/client/${relative_path}"
+        path_transform: "client/${relative_path}"
         commit_strategy:
           type: "pull_request"
-          # Individual rule commit messages are still used for commits
-          # But PR title/body come from batch_pr_config above
-          commit_message: "Update client examples"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+          file: "deprecated_examples.json"
 
-  # Rule 2: Copy server files
-  - name: "server-files"
+  # Rule 2: Copy Java server
+  - name: "java-server"
     source_pattern:
-      type: "prefix"
-      pattern: "examples/server/"
+      type: "regex"
+      pattern: "^mflix/server/java-spring/(?P<file>.+)$"
     targets:
-      - repo: "mongodb/docs"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "source/code-examples/server/${relative_path}"
+        path_transform: "server/${file}"
         commit_strategy:
           type: "pull_request"
-          commit_message: "Update server examples"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
 
-  # Rule 3: Copy README files
-  - name: "readme-files"
+  # Rule 3: Copy Java README
+  - name: "mflix-java-readme"
     source_pattern:
       type: "glob"
-      pattern: "examples/**/README.md"
+      pattern: "mflix/README-JAVA-SPRING.md"
     targets:
-      - repo: "mongodb/docs"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
-        path_transform: "source/code-examples/${matched_pattern}"
+        path_transform: "README.md"
         commit_strategy:
           type: "pull_request"
-          commit_message: "Update README files"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
 
-# Result: All three rules will be batched into ONE PR in mongodb/docs
-# The PR will use the title/body from batch_pr_config with accurate file count
-# For example, if rule 1 matches 10 files, rule 2 matches 5 files, and rule 3 matches 2 files,
-# the PR will show "Total files: 17" in the body
+  # Rule 4: Copy Java .gitignore
+  - name: "mflix-java-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-java"
+    targets:
+      - repo: "cbullinger/sample-app-java-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
 
+  # ============================================================================
+  # JavaScript Target: cbullinger/sample-app-nodejs-mflix
+  # ============================================================================
+
+  # Rule 5: Copy client directory to JavaScript target
+  - name: "mflix-client-to-js"
+    source_pattern:
+      type: "prefix"
+      pattern: "mflix/client/"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: "client/${relative_path}"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+          file: "deprecated_examples.json"
+
+  # Rule 6: Copy Express server files
+  - name: "mflix-express-server"
+    source_pattern:
+      type: "regex"
+      pattern: "mflix/server/express/(?P<file>.+)$"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: "server/${file}"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 7: Copy JavaScript README
+  - name: "mflix-js-readme"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/README-JAVASCRIPT-EXPRESS.md"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: "README.md"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 8: Copy JavaScript .gitignore
+  - name: "mflix-js-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-js"
+    targets:
+      - repo: "cbullinger/sample-app-nodejs-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # ============================================================================
+  # Python Target: cbullinger/sample-app-python-mflix
+  # ============================================================================
+
+  # Rule 9: Copy client directory to Python target
+  - name: "mflix-client-to-python"
+    source_pattern:
+      type: "prefix"
+      pattern: "mflix/client/"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "client/${relative_path}"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+          file: "deprecated_examples.json"
+
+  # Rule 10: Copy Python server files
+  - name: "mflix-python-server"
+    source_pattern:
+      type: "regex"
+      pattern: "mflix/server/python/(?P<file>.+)$"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "server/${file}"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 11: Copy Python README
+  - name: "mflix-python-readme"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/README-PYTHON-FASTAPI.md"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: "README.md"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
+
+  # Rule 12: Copy Python .gitignore
+  - name: "mflix-python-gitignore"
+    source_pattern:
+      type: "glob"
+      pattern: "mflix/.gitignore-python"
+    targets:
+      - repo: "cbullinger/sample-app-python-mflix"
+        branch: "main"
+        path_transform: ".gitignore"
+        commit_strategy:
+          type: "pull_request"
+          auto_merge: false
+        deprecation_check:
+          enabled: true
