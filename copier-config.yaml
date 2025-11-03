@@ -261,7 +261,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-python-mflix"
+      - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
         path_transform: "server/${file}"  
         commit_strategy:
