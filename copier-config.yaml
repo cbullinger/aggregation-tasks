@@ -44,7 +44,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-java-mflix"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
         path_transform: "client/${relative_path}"  
         commit_strategy:
@@ -71,7 +71,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-java-mflix"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
         path_transform: "server/${file}"  
         commit_strategy:
@@ -92,7 +92,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/README-JAVA-SPRING.md"
     targets:
-      - repo: "mongodb/sample-app-java-mflix"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
         path_transform: "README.md"
         commit_strategy:
@@ -112,7 +112,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/.gitignore-java"
     targets:
-      - repo: "mongodb/sample-app-java-mflix"
+      - repo: "cbullinger/sample-app-java-mflix"
         branch: "main"
         path_transform: ".gitignore"
         commit_strategy:
@@ -140,7 +140,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-nodejs-mflix"
+      - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
         path_transform: "client/${relative_path}"
         commit_strategy:
@@ -166,7 +166,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-nodejs-mflix"
+      - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
         path_transform: "server/${file}"  
         commit_strategy:
@@ -187,7 +187,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/README-JAVASCRIPT-EXPRESS.md"
     targets:
-      - repo: "mongodb/sample-app-nodejs-mflix"
+      - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
         path_transform: "README.md"
         commit_strategy:
@@ -207,7 +207,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/.gitignore-js"
     targets:
-      - repo: "mongodb/sample-app-nodejs-mflix"
+      - repo: "cbullinger/sample-app-nodejs-mflix"
         branch: "main"
         path_transform: ".gitignore"
         commit_strategy:
@@ -235,7 +235,7 @@ copy_rules:
         - "README.md$"          # Exclude README files
         - "\\.env$"             # Exclude environment files
     targets:
-      - repo: "mongodb/sample-app-python-mflix"
+      - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
         path_transform: "client/${relative_path}"
         commit_strategy:
@@ -282,7 +282,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/README-PYTHON-FASTAPI.md"
     targets:
-      - repo: "mongodb/sample-app-python-mflix"
+      - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
         path_transform: "README.md"
         commit_strategy:
@@ -302,7 +302,7 @@ copy_rules:
       type: "glob"
       pattern: "mflix/.gitignore-python"
     targets:
-      - repo: "mongodb/sample-app-python-mflix"
+      - repo: "cbullinger/sample-app-python-mflix"
         branch: "main"
         path_transform: ".gitignore"
         commit_strategy:
