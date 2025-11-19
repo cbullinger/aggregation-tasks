@@ -42,7 +42,7 @@ workflows:
       - copy: { from: "mflix/README-JAVA-SPRING.md", to: "README.md" }
       - copy: { from: "mflix/.gitignore-java", to: ".gitignore" }
     commit_strategy:
-      $ref: "../strategies/mflix-pr-strategy.yaml"
+      $ref: ".copier/strategies/mflix-pr-strategy.yaml"
 
   # --------------------------------------------------------------------------
   # MFlix Node.js Application
@@ -57,7 +57,7 @@ workflows:
       - copy: { from: "mflix/README-JAVASCRIPT-EXPRESS.md", to: "README.md" }
       - copy: { from: "mflix/.gitignore-js", to: ".gitignore" }
     commit_strategy:
-      $ref: "../strategies/mflix-pr-strategy.yaml"
+      $ref: ".copier/strategies/mflix-pr-strategy.yaml"
 
   # --------------------------------------------------------------------------
   # MFlix Python Application
@@ -72,7 +72,7 @@ workflows:
       - copy: { from: "mflix/README-PYTHON-FASTAPI.md", to: "README.md" }
       - copy: { from: "mflix/.gitignore-python", to: ".gitignore" }
     commit_strategy:
-      $ref: "../strategies/mflix-pr-strategy.yaml"
+      $ref: ".copier/strategies/mflix-pr-strategy.yaml"
 
 
 # ============================================================================
