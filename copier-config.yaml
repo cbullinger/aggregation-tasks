@@ -37,7 +37,7 @@ workflows:
   # --------------------------------------------------------------------------
   - name: "mflix-java"
     destination:
-      repo: "mongodb/sample-app-java-mflix"
+      repo: "cbullinger/sample-app-java-mflix"
       branch: "main"
     transformations:
       - move: { from: "mflix/client", to: "client" }
@@ -62,7 +62,7 @@ workflows:
   # --------------------------------------------------------------------------
   - name: "mflix-nodejs"
     destination:
-      repo: "mongodb/sample-app-nodejs-mflix"
+      repo: "cbullinger/sample-app-nodejs-mflix"
       branch: "main"
     transformations:
       - move: { from: "mflix/client", to: "client" }
@@ -87,7 +87,7 @@ workflows:
   # --------------------------------------------------------------------------
   - name: "mflix-python"
     destination:
-      repo: "mongodb/sample-app-python-mflix"
+      repo: "cbullinger/sample-app-python-mflix"
       branch: "main"
     transformations:
       - move: { from: "mflix/client", to: "client" }
