@@ -11,7 +11,6 @@
 defaults:
   commit_strategy:
     type: "pull_request"
-    auto_merge: false
     use_pr_template: true
     commit_message: "Automated update from ${source_repo} PR #${pr_number} (${file_count} files)"
   deprecation_check:
@@ -52,6 +51,7 @@ workflows:
         **Source:** ${source_repo} (${source_branch})
         **PR:** #${pr_number} | **Commit:** ${commit_sha}
         **Changes:** ${file_count} files 
+      auto_merge: false
     exclude:
       - "mflix/client/**/.gitignore"
       - "mflix/server/java-spring/**/.gitignore"
@@ -77,6 +77,7 @@ workflows:
         **Source:** ${source_repo} (${source_branch})
         **PR:** #${pr_number} | **Commit:** ${commit_sha}
         **Changes:** ${file_count} files 
+      auto_merge: false
     exclude:
       - "mflix/client/**/.gitignore"
       - "mflix/server/js-express/**/.gitignore"
@@ -95,7 +96,6 @@ workflows:
       - copy: { from: "mflix/README-PYTHON-FASTAPI.md", to: "README.md" }
       - copy: { from: "mflix/.gitignore-python", to: ".gitignore" }
     commit_strategy:
-      type: "pull_request"
       pr_title: "Update MFlix application from docs-sample-apps"
       pr_body: |
         Automated update of MFlix Python application
