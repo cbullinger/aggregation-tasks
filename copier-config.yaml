@@ -39,21 +39,13 @@ workflows:
     repo: "cbullinger/sample-app-java-mflix"
     branch: "main"
   transformations:
-  - move: { from: "mflix/client", to: "client" }
-  - move: { from: "mflix/server/java-spring", to: "server" }
-  - copy: { from: "mflix/README-JAVA-SPRING.md", to: "README.md" }
-  - copy: { from: "mflix/.gitignore-java", to: ".gitignore" }
-  commit_strategy:
-    pr_title: "Update MFlix application from docs-sample-apps"
-    pr_body: |
-      Automated update of MFlix Java application
+  - glob:
+      pattern: "mflix/server/java-spring/**/*"
+      transform: "${relative_path}"
 
-      **Source:** ${source_repo} (${source_branch})
-      **PR:** #${pr_number} | **Commit:** ${commit_sha}
-      **Changes:** ${file_count} files 
-  exclude:
-  - "mflix/client/**/.gitignore"
-  - "mflix/server/java-spring/**/.gitignore"
+  commit_strategy:
+    type: "direct_commit"
+    commit_message: "Automated copy from ${source_repo} PR #${pr_number}"
 
 # --------------------------------------------------------------------------
 # MFlix Node.js Application
