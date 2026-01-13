@@ -44,7 +44,7 @@ workflows:
       transform: "${relative_path}"
 
   commit_strategy:
-    type: "direct_commit"
+    type: "direct"
     commit_message: "Automated copy from ${source_repo} PR #${pr_number}"
 
 # --------------------------------------------------------------------------
