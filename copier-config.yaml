@@ -36,7 +36,7 @@ workflows:
 # --------------------------------------------------------------------------
 - name: "mflix-java"
   destination:
-    repo: "cbullinger/sample-app-java-mflix"
+    repo: "cbullinger/copier-app-dest-1"
     branch: "main"
   transformations:
   - glob:
