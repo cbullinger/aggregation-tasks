@@ -14,15 +14,29 @@ This is a full-stack movie browsing application built with Java Spring Boot and 
     └── mvnw
 ```
 
+## Data Limitations
+
+The `sample_mflix` dataset contains movies released up to **2016**. Searching for movies from 2017 or later will return no results. This is a limitation of the sample dataset, not the application.
+
 ## Prerequisites
 
 - **Java 21** or higher
 - **Node.js 20** or higher
 - **MongoDB Atlas cluster or local deployment** with the `sample_mflix` dataset loaded
-  - [Load sample data](https://www.mongodb.com/docs/atlas/sample-data/) 
+  - [Load sample data](https://www.mongodb.com/docs/atlas/sample-data/)
 - **Maven** (included via Maven Wrapper)
 - **Voyage AI API key** (For MongoDB Vector Search)
   - [Get a Voyage AI API key](https://www.voyageai.com/)
+
+## Verify Requirements
+
+Before getting started, you can run the verification script to check if you have all the necessary requirements:
+
+```bash
+./check-requirements.sh
+```
+
+This script checks for required tools (Java, Maven, Node.js), validates your environment configuration, and verifies dependencies. Run with `--help` for more options.
 
 ## Getting Started
 
@@ -44,28 +58,19 @@ Edit the `.env` file and set your MongoDB connection string:
 
 ```env
 # MongoDB Connection
-# Replace with your MongoDB Atlas connection string or local MongoDB URI
 MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/sample_mflix?retryWrites=true&w=majority
 
-# Voyage AI Configuration
-# API key for Voyage AI embedding model (required for Vector Search)
+# Voyage AI Configuration (optional - required for Vector Search)
 VOYAGE_API_KEY=your_voyage_api_key
 
 # Server Configuration
-# Port on which the Spring Boot application will run
 PORT=3001
 
 # CORS Configuration
-# Allowed origin for cross-origin requests (frontend URL)
-# For multiple origins, separate with commas
-CORS_ORIGIN=http://localhost:3000
-
-# Optional: Enable MongoDB Search tests
-# Uncomment the following line to enable Search tests
-# ENABLE_SEARCH_TESTS=true
+CORS_ORIGINS=http://localhost:3000
 ```
 
-**Note:** Replace `username`, `password`, and `cluster` with your
+**Note:** Replace `<username>`, `<password>`, and `<cluster>` with your
 actual MongoDB Atlas credentials. Replace `your_voyage_api_key` with
 your key.
 

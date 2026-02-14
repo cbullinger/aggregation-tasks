@@ -1,9 +1,13 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from src.routers import movies
-from src.utils.errorHandler import register_error_handlers
 from src.database.mongo_client import db, get_collection
+from src.utils.exceptions import VoyageAuthError, VoyageAPIError
+from src.utils.errorResponse import create_error_response
+from src.utils.logger import logger
+from src.middleware.request_logging import RequestLoggingMiddleware
 
 import os
 from dotenv import load_dotenv
@@ -15,25 +19,25 @@ load_dotenv()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup: Create search indexes
-    await ensure_search_index()
-    await vector_search_index()
+    await ensure_mongodb_search_index()
+    await ensure_vector_search_index()
+    await ensure_standard_index()
 
-    # Print server information
-    print(f"\n{'='*60}")
-    print(f"  Server started at http://127.0.0.1:3001")
-    print(f"  Documentation at http://127.0.0.1:3001/docs")
-    print(f"  Interactive API docs at http://127.0.0.1:3001/redoc")
-    print(f"{'='*60}\n")
+    # Log server information
+    logger.info("=" * 60)
+    logger.info("  Server started at http://127.0.0.1:3001")
+    logger.info("  Documentation at http://127.0.0.1:3001/docs")
+    logger.info("  Interactive API docs at http://127.0.0.1:3001/redoc")
+    logger.info("=" * 60)
 
     yield
     # Shutdown: Clean up resources if needed
     # Add any cleanup code here
 
 
-async def ensure_search_index():
+async def ensure_mongodb_search_index():
     try:
         movies_collection = db.get_collection("movies")
-        comments_collection = db.get_collection("comments")
         
         # Check and create search index for movies collection
         result = await movies_collection.list_search_indexes()
@@ -71,7 +75,7 @@ async def ensure_search_index():
         )
 
 
-async def vector_search_index():
+async def ensure_vector_search_index():
     """
     Creates vector search index on application startup if it doesn't already exist.
     This ensures the index is ready before any vector search requests are made.
@@ -114,8 +118,53 @@ async def vector_search_index():
             f"and verify the 'embedded_movies' collection exists with the required embedding field."
         )
 
+async def ensure_standard_index():
+    """
+    Creates a standard MongoDB index on the comments collection on application startup.
+    This improves performance for queries filtering by movie_id such as ReportingByComments().
+    """
+
+    try:
+        comments_collection = db.get_collection("comments")
+
+        existing_indexes_cursor = await comments_collection.list_indexes()
+        existing_indexes = [index async for index in existing_indexes_cursor]
+        index_names = [index.get("name") for index in existing_indexes]
+        standard_index_name = "movie_id_index"
+        if standard_index_name not in index_names:
+            await comments_collection.create_index([("movie_id", 1)], name=standard_index_name)
+
+    except Exception as e:
+        logger.warning(f"Failed to create standard index on 'comments' collection: {str(e)}")
+        logger.warning("Performance may be degraded. Please check your MongoDB configuration.")
+
 
 app = FastAPI(lifespan=lifespan)
+
+# Add custom exception handlers
+@app.exception_handler(VoyageAuthError)
+async def voyage_auth_error_handler(request: Request, exc: VoyageAuthError):
+    """Handle Voyage AI authentication errors with 401 status."""
+    return JSONResponse(
+        status_code=401,
+        content=create_error_response(
+            message=exc.message,
+            code="VOYAGE_AUTH_ERROR",
+            details="Please verify your VOYAGE_API_KEY is correct in the .env file"
+        )
+    )
+
+@app.exception_handler(VoyageAPIError)
+async def voyage_api_error_handler(request: Request, exc: VoyageAPIError):
+    """Handle Voyage AI API errors with 503 status."""
+    return JSONResponse(
+        status_code=503,
+        content=create_error_response(
+            message="Vector search service unavailable",
+            code="VOYAGE_API_ERROR",
+            details=exc.message
+        )
+    )
 
 # Add CORS middleware
 cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000,http://localhost:3001").split(",")
@@ -127,6 +176,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-register_error_handlers(app)
+# Add request logging middleware
+app.add_middleware(RequestLoggingMiddleware)
+
 app.include_router(movies.router, prefix="/api/movies", tags=["movies"])
 
