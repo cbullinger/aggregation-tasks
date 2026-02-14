@@ -1,4 +1,4 @@
-import { Movie, MoviesApiResponse } from '../types/movie';
+import { Movie, MoviesApiResponse } from '@/types/movie';
 
 /**
  * API configuration and helper functions
@@ -7,17 +7,59 @@ import { Movie, MoviesApiResponse } from '../types/movie';
 const API_BASE_URL = process.env.API_URL || 'http://localhost:3001';
 
 /**
- * Fetches movies from the Express API with pagination support
- * This function runs on the server during SSR
+ * Filter parameters for the movies endpoint
+ * These map to MongoDB find() query operators
+ */
+export interface MovieFilterParams {
+  genre?: string;
+  year?: number;
+  minRating?: number;
+  maxRating?: number;
+  sortBy?: 'title' | 'year' | 'imdb.rating';
+  sortOrder?: 'asc' | 'desc';
+}
+
+/**
+ * Fetches movies from the backend API with pagination and filtering support
+ * using MongoDB find() with query filters.
  */
 export async function fetchMovies(
-  limit: number = 20, 
-  skip: number = 0
+  limit: number = 20,
+  skip: number = 0,
+  filters?: MovieFilterParams
 ): Promise<{ movies: Movie[]; hasNextPage: boolean; hasPrevPage: boolean }> {
   try {
+    // Build query parameters
+    const queryParams = new URLSearchParams();
+
     // Request one extra movie to check if there's a next page
     const requestLimit = Math.min(limit + 1, 100);
-    const response = await fetch(`${API_BASE_URL}/api/movies?limit=${requestLimit}&skip=${skip}`, {
+    queryParams.append('limit', requestLimit.toString());
+    queryParams.append('skip', skip.toString());
+
+    // Add filter parameters if provided
+    if (filters) {
+      if (filters.genre) {
+        queryParams.append('genre', filters.genre);
+      }
+      if (filters.year !== undefined) {
+        queryParams.append('year', filters.year.toString());
+      }
+      if (filters.minRating !== undefined) {
+        queryParams.append('minRating', filters.minRating.toString());
+      }
+      if (filters.maxRating !== undefined) {
+        queryParams.append('maxRating', filters.maxRating.toString());
+      }
+      if (filters.sortBy) {
+        queryParams.append('sortBy', filters.sortBy);
+      }
+      if (filters.sortOrder) {
+        queryParams.append('sortOrder', filters.sortOrder);
+      }
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/movies?${queryParams}`, {
       next: { revalidate: 300 }, // Revalidate every 5 minutes
     });
 
@@ -26,7 +68,7 @@ export async function fetchMovies(
     }
 
     const result: MoviesApiResponse = await response.json();
-    
+
     if (!result.success) {
       throw new Error('API returned error response');
     }
@@ -42,18 +84,46 @@ export async function fetchMovies(
     };
   } catch (error) {
     console.error('Error fetching movies:', error);
-    
+
     // In development, throw the error to help with debugging
     if (process.env.NODE_ENV === 'development') {
       throw error;
     }
-    
+
     // In production, return empty result with logged error to prevent page crash
     return {
       movies: [],
       hasNextPage: false,
       hasPrevPage: false
     };
+  }
+}
+
+/**
+ * Fetches all unique genres from the backend API
+ * using MongoDB's distinct() operation.
+ */
+export async function fetchGenres(): Promise<string[]> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/movies/genres`, {
+      next: { revalidate: 3600 }, // Cache genres for 1 hour since they rarely change
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch genres: ${response.status}`);
+    }
+
+    const result: { success: boolean; data: string[]; message: string } = await response.json();
+
+    if (!result.success) {
+      throw new Error('API returned error response');
+    }
+
+    return result.data;
+  } catch (error) {
+    console.error('Error fetching genres:', error);
+    // Return empty array on error - FilterBar will handle gracefully
+    return [];
   }
 }
 
@@ -515,11 +585,28 @@ export async function fetchMoviesByYear(): Promise<{ success: boolean; error?: s
         error: 'Request timed out after 15 seconds'
       };
     }
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : 'Network error occurred while fetching movies by year'
     };
   }
+}
+
+/**
+ * Fetch the min and max year bounds from the available movie data.
+ * This allows dynamic detection of the dataset's year range.
+ */
+export async function fetchYearBounds(): Promise<{ success: boolean; minYear?: number; maxYear?: number; error?: string }> {
+  const result = await fetchMoviesByYear();
+  if (!result.success || !result.data || result.data.length === 0) {
+    return { success: false, error: result.error || 'No year data available' };
+  }
+  const years = result.data.map(stat => stat.year);
+  return {
+    success: true,
+    minYear: Math.min(...years),
+    maxYear: Math.max(...years)
+  };
 }
 
 /**
@@ -680,16 +767,36 @@ export async function vectorSearchMovies(searchParams: {
     const result = await response.json();
 
     if (!response.ok) {
-      return { 
-        success: false, 
-        error: result.error || `Failed to perform vector search: ${response.status}` 
+      // Extract error message from the standardized error response
+      const errorMessage = result.message || result.error?.message || `Failed to perform vector search: ${response.status}`;
+      const errorCode = result.error?.code;
+
+      // Provide user-friendly messages for specific error codes
+      if (errorCode === 'VOYAGE_AUTH_ERROR') {
+        return {
+          success: false,
+          error: 'Vector search unavailable: Your Voyage AI API key is missing or invalid. Please add a valid VOYAGE_API_KEY to your .env file and restart the server.'
+        };
+      }
+
+      if (errorCode === 'SERVICE_UNAVAILABLE' || errorCode === 'VOYAGE_API_ERROR') {
+        return {
+          success: false,
+          error: errorMessage || 'Vector search service is currently unavailable. Please try again later.'
+        };
+      }
+
+      return {
+        success: false,
+        error: errorMessage
       };
     }
 
     if (!result.success) {
-      return { 
-        success: false, 
-        error: result.error || 'API returned error response' 
+      const errorMessage = result.message || result.error?.message || 'API returned error response';
+      return {
+        success: false,
+        error: errorMessage
       };
     }
 
@@ -705,6 +812,7 @@ export async function vectorSearchMovies(searchParams: {
         genres: item.genres || [],
         directors: item.directors || [],
         cast: item.cast || [],
+        score: item.score,
         // Add default values for fields not included in VectorSearchResult
         fullplot: undefined,
         released: undefined,
