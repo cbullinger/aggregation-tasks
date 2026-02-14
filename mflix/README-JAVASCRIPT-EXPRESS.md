@@ -14,6 +14,10 @@ This is a full-stack movie browsing application built with Express.js and Next.j
     └── tsconfig.json
 ```
 
+## Data Limitations
+
+The `sample_mflix` dataset contains movies released up to **2016**. Searching for movies from 2017 or later will return no results. This is a limitation of the sample dataset, not the application.
+
 ## Prerequisites
 
 - **Node.js 22** or higher
@@ -22,6 +26,16 @@ This is a full-stack movie browsing application built with Express.js and Next.j
 - **npm** (included with Node.js)
 - **Voyage AI API key** (For MongoDB Vector Search)
   - [Get a Voyage AI API key](https://www.voyageai.com/)
+
+## Verify Requirements
+
+Before getting started, you can run the verification script to check if you have all the necessary requirements:
+
+```bash
+./check-requirements.sh
+```
+
+This script checks for required tools (Node.js, npm), validates your environment configuration, and verifies dependencies. Run with `--help` for more options.
 
 ## Getting Started
 
@@ -57,7 +71,7 @@ NODE_ENV=development
 # CORS Configuration
 # Allowed origin for cross-origin requests (frontend URL)
 # For multiple origins, separate with commas
-CORS_ORIGIN=http://localhost:3000
+CORS_ORIGINS=http://localhost:3000
 
 # Optional: Enable MongoDB Search tests
 # Uncomment the following line to enable Search tests
