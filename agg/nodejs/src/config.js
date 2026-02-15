@@ -28,3 +28,6 @@ export async function getReviewCollection() {
 export async function closeConnection() {
     await client.close();
 }
+
+// Test change: verify copier syncs Node.js config (workflow 1)
+// Timestamp: 2026-02-15
