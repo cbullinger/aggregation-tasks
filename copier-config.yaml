@@ -1,96 +1,196 @@
-# Docs Copier Workflow Configuration
-# Referenced from main config file in https://github.com/mongodb/code-example-tooling/blob/main/.copier/workflows/main.yaml
+# Copier Test Workflow Configuration
+# Source repo: cbullinger/aggregation-tasks
+#
+# This config exercises every supported feature for testing:
+#   - All 4 transform types: move, copy, glob, regex
+#   - Both commit strategies: direct, pull_request (with all options)
+#   - Deprecation check: enabled and disabled
+#   - Exclude patterns: workflow-level and defaults-level
+#   - Template variables in commit messages and PR bodies
 
 # ============================================================================
 # LOCAL DEFAULTS
 # ============================================================================
-# These defaults apply to all workflows in this file
-# They override main config defaults but can be overridden by individual workflows
 
 defaults:
   commit_strategy:
     type: "pull_request"
     auto_merge: false
-    use_pr_template: true
-    commit_message: "Automated update from ${source_repo} PR #${pr_number} (${file_count} files)"
+    commit_message: "Automated update from ${source_repo} PR #${pr_number}"
   deprecation_check:
     enabled: true
     file: "deprecated_examples.json"
   exclude:
-  - "**/.env"
-  - "**/node_modules/**"
-  - "**/.DS_Store"
-  - "\\.gitignore$"
-  - "README.md$"
+    - "**/.env"
+    - "**/node_modules/**"
+    - "**/.DS_Store"
+    - "**/venv/**"
+    - "**/.venv/**"
+    - "**/__pycache__/**"
+    - "**/.pytest_cache/**"
+    - "**/.gradle/**"
+    - "**/.idea/**"
+    - "**/build/**"
+    - "**/*.pyc"
 
 # ============================================================================
-# WORKFLOW CONFIGURATION
+# WORKFLOWS
 # ============================================================================
-# To add a workflow, create a DOCSP Jira ticket with the component set to `DevDocs`.
-# See also [README.md](https://github.com/mongodb/docs-sample-apps/blob/main/.copier/README.md)
 
 workflows:
 
 # --------------------------------------------------------------------------
-# MFlix Java Application
+# 1. GLOB TRANSFORM + DIRECT COMMIT
+#    Copies all Node.js aggregation task files using glob pattern matching.
+#    Uses direct commit strategy (no PR).
 # --------------------------------------------------------------------------
-- name: "mflix-java"
+- name: "agg-nodejs-glob"
   destination:
     repo: "cbullinger/copier-app-dest-1"
     branch: "main"
   transformations:
-  - glob:
-      pattern: "mflix/server/java-spring/**/*"
-      transform: "${relative_path}"
-
+    - glob:
+        pattern: "agg/nodejs/src/**/*"
+        transform: "nodejs/${relative_path}"
   commit_strategy:
     type: "direct"
-    commit_message: "Automated copy from ${source_repo} PR #${pr_number}"
+    commit_message: "[test-glob-direct] Sync Node.js agg tasks from ${source_repo} PR #${pr_number}"
+  deprecation_check:
+    enabled: false
+  exclude:
+    - "agg/nodejs/src/testConnection.js"
 
 # --------------------------------------------------------------------------
-# MFlix Node.js Application
+# 2. MOVE + COPY TRANSFORMS + PR WITH FULL OPTIONS
+#    Restructures the Python FastAPI MFlix app using move and copy transforms.
+#    Uses pull_request strategy with all available options.
 # --------------------------------------------------------------------------
-- name: "mflix-nodejs"
+- name: "mflix-python-move-copy"
   destination:
-    repo: "cbullinger/sample-app-nodejs-mflix"
+    repo: "cbullinger/copier-app-dest-2"
     branch: "main"
   transformations:
-  - move: { from: "mflix/client", to: "client" }
-  - move: { from: "mflix/server/js-express", to: "server" }
-  - copy: { from: "mflix/README-JAVASCRIPT-EXPRESS.md", to: "README.md" }
-  - copy: { from: "mflix/.gitignore-js", to: ".gitignore" }
+    - move: { from: "mflix/client", to: "client" }
+    - move: { from: "mflix/server/python-fastapi", to: "server" }
+    - copy: { from: "mflix/README-PYTHON-FASTAPI.md", to: "README.md" }
   commit_strategy:
-    pr_title: "Update MFlix application from docs-sample-apps"
+    type: "pull_request"
+    auto_merge: false
+    use_pr_template: true
+    pr_title: "[test-move-copy] Update MFlix Python from ${source_repo}"
     pr_body: |
-      Automated update of MFlix Node.js application
+      ## Automated Update
 
       **Source:** ${source_repo} (${source_branch})
       **PR:** #${pr_number} | **Commit:** ${commit_sha}
-      **Changes:** ${file_count} files 
+      **Files changed:** ${file_count}
+
+      ### What changed
+      This PR syncs the MFlix Python FastAPI application.
+    commit_message: "sync: MFlix Python from ${source_repo}#${pr_number}"
+  deprecation_check:
+    enabled: true
+    file: "deprecated_examples.json"
   exclude:
-  - "mflix/client/**/.gitignore"
-  - "mflix/server/js-express/**/.gitignore"
+    - "mflix/client/**/node_modules/**"
+    - "mflix/server/python-fastapi/.venv/**"
+    - "mflix/server/python-fastapi/.pytest_cache/**"
 
 # --------------------------------------------------------------------------
-# MFlix Python Application
+# 3. REGEX TRANSFORM + PR WITH AUTO-MERGE
+#    Uses regex with named capture groups to reorganize Java source files.
+#    Tests auto_merge: true.
 # --------------------------------------------------------------------------
-- name: "mflix-python"
+- name: "agg-java-regex"
   destination:
-    repo: "cbullinger/sample-app-python-mflix"
+    repo: "cbullinger/copier-app-dest-1"
     branch: "main"
   transformations:
-  - move: { from: "mflix/client", to: "client" }
-  - move: { from: "mflix/server/python-fastapi", to: "server" }
-  - copy: { from: "mflix/README-PYTHON-FASTAPI.md", to: "README.md" }
-  - copy: { from: "mflix/.gitignore-python", to: ".gitignore" }
+    - regex:
+        pattern: "agg/java/src/main/java/com/example/aggregation/(?P<file>.+\\.java)"
+        transform: "java/src/${file}"
+    - copy: { from: "agg/java/pom.xml", to: "java/pom.xml" }
+    - copy: { from: "agg/java/README.md", to: "java/README.md" }
   commit_strategy:
-    pr_title: "Update MFlix application from docs-sample-apps"
+    type: "pull_request"
+    auto_merge: true
+    pr_title: "[test-regex-automerge] Sync Java agg tasks"
     pr_body: |
-      Automated update of MFlix Python application
+      Automated sync of Java aggregation tasks using regex transform.
 
-      **Source:** ${source_repo} (${source_branch})
-      **PR:** #${pr_number} | **Commit:** ${commit_sha}
-      **Changes:** ${file_count} files 
+      **Source:** ${source_repo} PR #${pr_number}
+    commit_message: "sync: Java agg tasks from ${source_repo}#${pr_number}"
+
+# --------------------------------------------------------------------------
+# 4. GLOB TRANSFORM + PR (DEFAULTS)
+#    Copies Python aggregation tasks. Relies on defaults for commit strategy
+#    and deprecation check — tests that default inheritance works.
+# --------------------------------------------------------------------------
+- name: "agg-python-defaults"
+  destination:
+    repo: "cbullinger/copier-app-dest-2"
+    branch: "main"
+  transformations:
+    - glob:
+        pattern: "agg/python/**/*.py"
+        transform: "python/${relative_path}"
+    - copy: { from: "agg/python/requirements.txt", to: "python/requirements.txt" }
+    - copy: { from: "agg/python/README.md", to: "python/README.md" }
+  # No commit_strategy — inherits defaults (pull_request, auto_merge: false)
+  # No deprecation_check — inherits defaults (enabled: true)
+
+# --------------------------------------------------------------------------
+# 5. MOVE TRANSFORM + DIRECT COMMIT (MINIMAL)
+#    Minimal workflow with a single move transform and direct commit.
+#    Tests the simplest possible configuration.
+# --------------------------------------------------------------------------
+- name: "mflix-java-minimal"
+  destination:
+    repo: "cbullinger/copier-app-dest-1"
+    branch: "main"
+  transformations:
+    - move: { from: "mflix/server/java-spring", to: "java-spring" }
+  commit_strategy:
+    type: "direct"
+
+# --------------------------------------------------------------------------
+# 6. MIXED TRANSFORMS + PR WITH CUSTOM BODY
+#    Combines all 4 transform types in a single workflow.
+#    Tests that transforms are applied in order.
+# --------------------------------------------------------------------------
+- name: "mixed-transforms"
+  destination:
+    repo: "cbullinger/copier-app-dest-2"
+    branch: "main"
+  transformations:
+    # move: restructure the JS Express server
+    - move: { from: "mflix/server/js-express", to: "express-server" }
+    # copy: bring over a specific readme
+    - copy: { from: "mflix/README-JAVASCRIPT-EXPRESS.md", to: "express-server/README.md" }
+    # glob: grab all task files from Node.js agg
+    - glob:
+        pattern: "agg/nodejs/src/tasks/*.js"
+        transform: "express-server/examples/${filename}"
+    # regex: rename Java tasks with a prefix
+    - regex:
+        pattern: "agg/java/src/main/java/com/example/aggregation/(?P<name>Task\\d+)\\.java"
+        transform: "express-server/java-examples/${name}.java"
+  commit_strategy:
+    type: "pull_request"
+    auto_merge: false
+    pr_title: "[test-mixed] Combined transform test from ${source_repo}"
+    pr_body: |
+      ## Mixed Transform Test
+
+      This PR tests all 4 transform types in a single workflow:
+      - **move**: JS Express server
+      - **copy**: README file
+      - **glob**: Node.js task files
+      - **regex**: Java task files with rename
+
+      **Source:** ${source_repo} PR #${pr_number}
+      **Files:** ${file_count}
+    commit_message: "test: mixed transforms from ${source_repo}#${pr_number}"
   exclude:
-  - "mflix/client/**/.gitignore"
-  - "mflix/server/python-fastapi/**/.gitignore"
+    - "**/.gitignore"
+    - "**/package-lock.json"
