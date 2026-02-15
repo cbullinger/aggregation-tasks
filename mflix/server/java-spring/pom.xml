@@ -164,3 +164,6 @@
         </plugins>
     </build>
 </project>
+
+<!-- Test change: verify copier syncs Java Spring server (workflow 5) -->
+<!-- Timestamp: 2026-02-15 -->

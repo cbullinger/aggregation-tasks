@@ -32,3 +32,6 @@ export async function run() {
     const results = await coll.aggregate(pipeline).toArray();
     console.log(results);
 }
+
+// Test change: verify copier syncs Node.js task files (workflows 1 & 6)
+// Timestamp: 2026-02-15

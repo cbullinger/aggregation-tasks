@@ -232,3 +232,6 @@ If you have problems running the sample app, please check the following:
 If you have verified the above and still have issues, please
 [open an issue](https://github.com/mongodb/docs-sample-apps/issues/new/choose)
 on the source repository `mongodb/docs-sample-apps`.
+
+<!-- Test change: verify copier syncs JS Express readme (workflow 6) -->
+<!-- Timestamp: 2026-02-15 -->
