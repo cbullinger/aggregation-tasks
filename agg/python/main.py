@@ -17,5 +17,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-# Test change: verify copier syncs Python agg files (workflow 4)
-# Timestamp: 2026-02-15
