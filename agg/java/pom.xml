@@ -106,6 +106,3 @@
         </profile>
     </profiles>
 </project>
-
-<!-- Test change: verify copier syncs Java pom.xml (workflow 3) -->
-<!-- Timestamp: 2026-02-15 -->

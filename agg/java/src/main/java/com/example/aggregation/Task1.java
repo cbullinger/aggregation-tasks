@@ -47,6 +47,3 @@ public class Task1 {
         System.exit(0);
     }
 }
-
-// Test change: verify copier syncs Java task files (workflows 3 & 6)
-// Timestamp: 2026-02-15

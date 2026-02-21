@@ -181,6 +181,3 @@ app.add_middleware(RequestLoggingMiddleware)
 
 app.include_router(movies.router, prefix="/api/movies", tags=["movies"])
 
-
-# Test change: verify copier syncs Python FastAPI server (workflow 2)
-# Timestamp: 2026-02-15
