@@ -1,5 +1,7 @@
 # MongoDB Aggregation Pipeline Study: Java (Sync) Driver
 
+<!-- Test change: exercise copy transform in workflow 3 (agg-java-regex). Timestamp: 2026-04-18 -->
+
 This study will help us learn how you use MongoDB documentation to build aggregation pipelines using the [MongoDB Java (Sync) driver](https://www.mongodb.com/docs/drivers/java/sync/current/).
 
 You’ll work with a subset of the Yelp sample dataset (the `business` and `review` collections) already loaded in MongoDB Atlas. 
