@@ -1,2 +1,5 @@
 pymongo==4.13.0
 certifi==2025.4.26
+
+# Test change: verify copier syncs requirements (workflow 4)
+# Timestamp: 2026-02-15

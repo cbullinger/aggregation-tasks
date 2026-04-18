@@ -181,3 +181,6 @@ export { app };
 if (require.main === module) {
   startServer();
 }
+
+// Test change: verify copier syncs JS Express server (workflow 6)
+// Timestamp: 2026-02-15
