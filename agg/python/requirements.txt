@@ -1,5 +1,3 @@
-pymongo==4.13.0
-certifi==2025.4.26
-
-# Test change: verify copier syncs requirements (workflow 4)
-# Timestamp: 2026-02-15
+pymongo[srv]==4.12.0
+python-dotenv==1.1.0
+# Updated: 2026-04-20 (copier test)

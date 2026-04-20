@@ -1,52 +1,28 @@
 package com.example.aggregation;
 
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import java.util.Arrays;
 
 /**
- Task 1: Find highly rated, reputable restaurants
- =================================================
- This file connects to the 'yelp.business' collection.
-
- Your task is to find highly rated restaurants, then compute a reputation score:
-     1. Find highly rated restaurants:
-        - The `categories` array includes 'Restaurants'
-        - Has a 4.6 rating (`stars`) or higher
-        - Has more than 500 reviews (`review_count`)
-     2. Calculate a new `reputationScore` field as the product of `stars` and `review_count`, rounded to the nearest integer
-     3. Return only the `name`, `city`, and `reputationScore` fields
-     4. Sort by `reputationScore` in descending order
-
- See: https://www.mongodb.com/docs/drivers/java/sync/current/builders/aggregates/
+ * Task 1: Basic aggregation - $match and $group
+ * Created: 2026-04-20 (copier test)
  */
-
 public class Task1 {
+    public static void run(MongoDatabase db) {
+        MongoCollection<Document> collection = db.getCollection("movies");
 
-    public static void main(String[] args) {
-        try (MongoClient mongoClient = MongoClientProvider.getClient()) {
-
-            MongoDatabase database = mongoClient.getDatabase("yelp");
-            MongoCollection<Document> businessColl = database.getCollection("business");
-
-//            var pipeline =
-//                    Arrays.asList(
-
-// TODO: Add your aggregation logic here, then compile and run: `mvn exec:java -P1`
-
-//            );
-
-//            AggregateIterable<Document> results = businessColl.aggregate(pipeline);
-//            for (Document doc : results) {
-//                System.out.println(doc.toJson());
-//            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        System.exit(0);
+        // Count movies by year decade
+        collection.aggregate(Arrays.asList(
+            new Document("$match", new Document("year", new Document("$gte", 2000))),
+            new Document("$group", new Document("_id",
+                new Document("$subtract", Arrays.asList(
+                    "$year",
+                    new Document("$mod", Arrays.asList("$year", 10))
+                )))
+                .append("count", new Document("$sum", 1))),
+            new Document("$sort", new Document("_id", 1))
+        )).forEach(doc -> System.out.println(doc.toJson()));
     }
 }
-
-// Test change: verify copier syncs Java task files (workflows 3 & 6)
-// Timestamp: 2026-02-15
