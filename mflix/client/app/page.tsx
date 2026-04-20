@@ -1,18 +1,19 @@
-import Link from "next/link";
-import styles from "./home.module.css";
+/**
+ * MFlix Home Page
+ * Updated: 2026-04-20 (copier test)
+ */
+import styles from './home.module.css';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Sample Mflix</h1>
-        <p className={styles.description}>
-          Explore movies from the sample MFlix database
-        </p>
-        <Link href="/movies" className={styles.button}>
-          See movies
-        </Link>
-      </main>
-    </div>
+    <main className={styles.main}>
+      <h1>MFlix</h1>
+      <p>Welcome to MFlix - a sample movie browsing application.</p>
+      <p>Browse movies, view details, and explore aggregation examples.</p>
+      <nav>
+        <a href="/movies">Browse Movies</a>
+        <a href="/aggregations">Aggregation Examples</a>
+      </nav>
+    </main>
   );
 }

@@ -1,46 +1,25 @@
-import {closeConnection} from "./config.js";
-import * as path from "node:path";
-import * as fs from "node:fs";
+/**
+ * MongoDB Aggregation Tasks - Node.js
+ * Updated: 2026-04-20 (copier test)
+ */
+const { MongoClient } = require('mongodb');
+const config = require('./config');
 
 async function main() {
-    const taskName = process.argv[2];
-    if (!taskName) {
-        console.error('Usage: npm run task <taskName>');
-        process.exit(1);
-    }
+  const client = new MongoClient(config.uri);
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    const db = client.db(config.database);
 
-    const tasksDir = 'tasks';
-    const tasksPath = path.resolve('src', 'tasks');
-    const taskFiles = fs.readdirSync(tasksPath).filter(f => f.endsWith('.js'));
-    const tasks = {};
-    for (const file of taskFiles) {
-        const mod = await import(`./${tasksDir}/${file}`);
-        tasks[mod.name] = mod;
-    }
+    // Run aggregation tasks
+    const tasks = require('./tasks/task1');
+    await tasks.run(db);
 
-    const task = tasks[taskName];
-    if (!task) {
-        console.error(`Unknown task: ${taskName}`);
-        console.log('Available tasks:', Object.keys(tasks).join(', '));
-        process.exit(1);
-    }
-
-    console.log(`Running Task ${taskName} — ${task.description}`);
-    const timeout = 10000; // ms
-
-    try {
-        await Promise.race([
-            task.run(),
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Task timed out')), timeout)
-            )
-        ]);
-    } catch (err) {
-        console.error('Task error:', err);
-        process.exitCode = 1;
-    } finally {
-        await closeConnection();
-    }
+    console.log('All tasks completed successfully');
+  } finally {
+    await client.close();
+  }
 }
 
-main();
+main().catch(console.error);
